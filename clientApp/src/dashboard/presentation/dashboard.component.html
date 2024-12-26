@@ -13,13 +13,13 @@
   <div class="dashboard-item" data-page="dashboard">
     <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
   </div>
-  <div class="dashboard-item" data-page="patients">
+  <div class="dashboard-item" data-page="patients"(click) = "goToPatient()">
     <i class="fas fa-user-friends"></i> <span>Patients</span>
   </div>
   <div class="dashboard-item" data-page="consultations">
     <i class="fas fa-stethoscope"></i> <span>Consultations</span>
   </div>
-  <div class="dashboard-item" data-page="care-management">
+  <div class="dashboard-item" data-page="care-management" >
     <i class="fas fa-heart"></i> <span>Care Management</span>
   </div>
   <div class="dashboard-item" data-page="pharmacy">
@@ -35,7 +35,6 @@
  
 
 </aside>
-
 <main class="main-content">
   <header class="top-header">
     <div class="header-left">
@@ -64,3 +63,5 @@
     <!-- Dashboard content will go here -->
   </div>
 </main>
+
+

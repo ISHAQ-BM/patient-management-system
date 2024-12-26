@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AuthComponent } from '../auth/presentation/auth.component';
 import { DashboardComponent } from '../dashboard/presentation/dashboard.component';
-
+import{PatientsComponent } from "../patients/presentation/patients.component"
+ 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, DashboardComponent],

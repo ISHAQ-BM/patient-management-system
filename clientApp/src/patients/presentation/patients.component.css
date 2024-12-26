@@ -1,92 +1,190 @@
-.content {
-    padding: 20px;
-    margin-left: 250px;
-    background-color: #ffffff;
-    min-height: 100vh;
-  }
-  
-  .content-header h1 {
-    font-size: 24px;
-    font-weight: 600;
-    color: #1f2937;
-    margin-bottom: 20px;
-  }
-  
-  .patient-list-container {
-    background-color: #f9fafb;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .search-bar {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .search-input {
-    padding: 10px;
-    width: 300px;
-    border: 1px solid #d1d5db;
-    border-radius: 5px;
-  }
-  
-  .search-btn,
-  .qr-search-btn {
-    padding: 10px 15px;
-    background-color: #1d4ed8;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .search-btn:hover,
-  .qr-search-btn:hover {
-    background-color: #2563eb;
-  }
-  
-  .patient-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .patient-table th,
-  .patient-table td {
-    padding: 10px;
-    border: 1px solid #d1d5db;
-    text-align: left;
-  }
-  
-  .patient-table th {
-    background-color: #f3f4f6;
-    font-weight: 600;
-  }
-  
-  .delete-btn {
-    color: #ffffff;
-    background-color: #ef4444;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-  
-  .info-btn {
-    color: #ffffff;
-    background-color: #3b82f6;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-  
-  .delete-btn:hover {
-    background-color: #dc2626;
-  }
-  
-  .info-btn:hover {
-    background-color: #2563eb;
-  }
-  
+.top-header {
+  background: #ffffff;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.notification-btn {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.notification-dot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  background: #ef4444;
+  border-radius: 50%;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-info h3 {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.user-info span {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.dashboard-content {
+  padding: 2rem;
+}
+
+.container {
+  width: 70%;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  color: #337e92;
+  font-size: 24px;
+  margin: 0;
+}
+
+.header .search-bar {
+  display: flex;
+  align-items: center;
+}
+
+.header input[type="text"] {
+  padding: 8px;
+  width: 300px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.header button {
+  margin-left: 10px;
+  padding: 8px 12px;
+  background-color: #337e92;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.header button:hover {
+  background-color: #286678;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f4f4f4;
+}
+
+.patient-photo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.action-button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.action-button.delete {
+  background: #ff4d4d;
+  color: white;
+}
+
+.action-button.approve {
+  background: #337e92;
+  color: white;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.pagination button.active {
+  background-color: #337e92;
+  color: #fff;
+  border: none;
+}
+
+.pagination button:hover {
+  background-color: #f0f0f0;
+}

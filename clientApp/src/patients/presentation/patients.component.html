@@ -1,41 +1,98 @@
-<div class="content">
-    <header class="content-header">
-      <h1>Patients</h1>
-    </header>
-    <div class="patient-list-container">
-      <div class="search-bar">
-        <input type="text" placeholder="Search" class="search-input" />
-        <button class="search-btn">Search</button>
-        <button class="qr-search-btn">QR Search</button>
+<main class="main-content">
+    <header class="top-header">
+      <div class="header-left">
+        <button class="toggle-btn" id="sidebarToggle">
+          <i class="icon menu-icon"></i>
+        </button>
+        <h1>Patient</h1>
       </div>
-      <table class="patient-table">
-        <thead>
-          <tr>
-            <th>Patient Name</th>
-            <th>Age</th>
-            <th>Gender</th>
-            <th>Blood Group</th>
-            <th>Phone Number</th>
-            <th>Email ID</th>
-            <th>User Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Example row -->
-          <tr>
-            <td>Elizabeth Polson</td>
-            <td>32</td>
-            <td>Female</td>
-            <td>B+ve</td>
-            <td>+91 12345 67890</td>
-            <td>elizabethpolson@hotmail.com</td>
-            <td>
-              <button class="delete-btn">X</button>
-              <button class="info-btn">i</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="header-right">
+        <div class="notifications">
+          <button class="notification-btn" id="notificationBtn">
+            <i class="icon bell-icon"></i>
+            <span class="notification-dot"></span>
+          </button>
+        </div>
+        <div class="user-profile">
+          <img src="avatar.jpg" alt="Profile" class="avatar" />
+          <div class="user-info">
+            <h3>Yessad Lamia</h3>
+            <span>Admin</span>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="dashboard-content">
+      <div class="container">
+        <div class="header">
+          <div class="search-bar">
+            <input type="text" placeholder="Rechercher un patient..." />
+            <button>Rechercher</button>
+            <button>QR Search</button>
+          </div>
+        </div>
+  
+        <table>
+          <thead>
+            <tr>
+              <th>Photo</th>
+              <th>Nom</th>
+              <th>Âge</th>
+              <th>Sexe</th>
+              <th>Groupe sanguin</th>
+              <th>Email</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <img
+                  src="https://via.placeholder.com/40"
+                  alt="Elizabeth Polson"
+                  class="patient-photo"
+                />
+              </td>
+              <td>Elizabeth Polson</td>
+              <td>32</td>
+              <td>Femme</td>
+              <td>B+</td>
+              <td>elsabethpolsanhotmail.com</td>
+              <td>
+                <button class="action-button delete">❌</button>
+                <button class="action-button approve">✔️</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <img
+                  src="https://via.placeholder.com/40"
+                  alt="John David"
+                  class="patient-photo"
+                />
+              </td>
+              <td>John David</td>
+              <td>28</td>
+              <td>Homme</td>
+              <td>B+</td>
+              <td>davidjohn22gmail.com</td>
+              <td>
+                <button class="action-button delete">❌</button>
+                <button class="action-button approve">✔️</button>
+              </td>
+            </tr>
+            <!-- Ajoutez d'autres lignes de patients ici -->
+          </tbody>
+        </table>
+  
+        <div class="pagination">
+          <button>&laquo; Précédent</button>
+          <button class="active">1</button>
+          <button>2</button>
+          <button>3</button>
+          <button>Suivant &raquo;</button>
+        </div>
+      </div>
     </div>
-  </div>
+  </main>
   

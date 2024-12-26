@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -6,7 +8,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
+  router=inject(Router)
   message: string = '';
+  goToPatient(){
+    this.router.navigate(['patient']);
+  }
 
   // Méthode qui gère la sélection de l'élément
   selectElement(elementNumber: number) {
