@@ -8,5 +8,4 @@ export abstract class AuthRepository {
     abstract login(params: {username:string,password:string}): Promise<LoginResponse>;
     abstract logout(params: {}):Promise<string>;
     abstract isAuthenticated():boolean;
-
 }

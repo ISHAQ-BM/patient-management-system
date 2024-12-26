@@ -30,12 +30,6 @@ form {
     margin-bottom: 10px;
 }
 
-
-
-
-
-
-
 form .submit {
     width: 100%;
     height: 2.5rem;
@@ -46,12 +40,9 @@ form .submit {
     font-size: 1rem;
 }
 
-mat
 
 form .submit:disabled {
-    
     background-color: #cbe4e4;
-    
 }
 
 input::placeholder {
@@ -60,8 +51,6 @@ input::placeholder {
     font-size: 15px;
     font-weight: 500;
 }
-
-
 
 a {
     color: var(--main, #0198A5);

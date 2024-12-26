@@ -1,4 +1,4 @@
-<main class="main">
+<main class="main font-poppins">
   <div class="content">
     <h1>Bienvenue, Connectez-vous à votre santé.</h1>
     <svg
@@ -60,15 +60,15 @@
       
 
       
-      <button mat-raised-button class="submit" type="submit" [disabled]="!authForm.valid || isLoading" >
+      <button  mat-raised-button class="submit" type="submit" [disabled]="!authForm.valid || isLoading" >
         
         <mat-spinner *ngIf="isLoading" diameter="20" class="uploader-status" ></mat-spinner>
-        <span *ngIf="!isLoading">Connecter</span>
+        <span class="hover:cursor-pointer" *ngIf="!isLoading">Connecter</span>
 
       </button>
     </form>
 
     <p>Vous n'avez pas encore de compte?</p>
-    <a href="#">Contacter l'administration</a>
+    <a class="hover:underline" href="#">Contacter l'administration</a>
   </div>
 </main>
