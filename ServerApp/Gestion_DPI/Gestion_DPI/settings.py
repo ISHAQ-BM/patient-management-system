@@ -42,6 +42,12 @@ INSTALLED_APPS = [
     'authentification',
     'corsheaders',
     'drf_yasg',
+    'Med_Patient',
+    'Soins_Exams_Patient'
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:4200',  
 ]
 
 AUTHENTICATION_BACKENDS = [
