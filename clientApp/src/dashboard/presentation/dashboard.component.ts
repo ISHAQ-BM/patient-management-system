@@ -2,24 +2,13 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  templateUrl: 'dashboard.component.html',
 })
 export class DashboardComponent {
-  message: string = '';
+  isHovered = false;  
+  isCollapsed = true;
 
-  // Méthode qui gère la sélection de l'élément
-  selectElement(elementNumber: number) {
-    this.message = `Bonjour, vous êtes dans l'élément ${elementNumber}`;
-  }
-
-  // Méthode pour le bouton "Settings"
-  goToSettings() {
-    alert('Settings clicked');
-  }
-
-  // Méthode pour le bouton "Logout"
-  logout() {
-    alert('Logout clicked');
+  toggleSidebar() {
+    this.isCollapsed = !this.isCollapsed;
   }
 }
