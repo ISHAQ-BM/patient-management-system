@@ -64,7 +64,7 @@ class DossierPatientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DossierPatient
-        fields = ['NSS', 'date_derniere_mise_a_jour', 'patient_info']
+        fields = ['id','NSS', 'date_derniere_mise_a_jour', 'patient_info']
 
     def get_patient_info(self, obj):
         """
