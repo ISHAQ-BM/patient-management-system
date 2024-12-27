@@ -1,6 +1,10 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.views import APIView
+
+from .models import DossierPatient, Patient,Medecin
 from rest_framework import status
 from .serializers import UserSerializer, PatientSerializer, DossierPatientSerializer
 from .permissions import IsPersonnelAdministratif
@@ -192,3 +196,81 @@ class PersonnelAdministratifViewSet(viewsets.ViewSet):
                 {'error': f'Une erreur est survenue: {str(e)}'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+class RechercherDossierPatientAPIView(APIView):
+    permission_classes = [IsAuthenticated]  # Vérifie que l'utilisateur est authentifié
+
+    @swagger_auto_schema(
+        operation_description="Recherche un dossier patient via son numéro de sécurité sociale (NSS).",
+        manual_parameters=[
+            openapi.Parameter(
+                'nss',
+                openapi.IN_QUERY,
+                description="Numéro de sécurité sociale du patient à rechercher.",
+                type=openapi.TYPE_STRING,
+                required=True,
+            )
+        ],
+        responses={
+            200: openapi.Response(
+                description="Dossier patient et informations associées.",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        "NSS": openapi.Schema(type=openapi.TYPE_STRING, description="Numéro de sécurité sociale du patient."),
+                        "date_derniere_mise_a_jour": openapi.Schema(type=openapi.TYPE_STRING, format="date", description="Date de dernière mise à jour du dossier."),
+                        "patient_info": openapi.Schema(
+                            type=openapi.TYPE_OBJECT,
+                            properties={
+                                "numero_securite_sociale": openapi.Schema(type=openapi.TYPE_STRING, description="Numéro de sécurité sociale."),
+                                "nom": openapi.Schema(type=openapi.TYPE_STRING, description="Nom du patient."),
+                                "prenom": openapi.Schema(type=openapi.TYPE_STRING, description="Prénom du patient."),
+                                "date_naissance": openapi.Schema(type=openapi.TYPE_STRING, format="date", description="Date de naissance."),
+                                "adresse": openapi.Schema(type=openapi.TYPE_STRING, description="Adresse du patient."),
+                                "telephone": openapi.Schema(type=openapi.TYPE_STRING, description="Téléphone du patient."),
+                                "mutuelle": openapi.Schema(type=openapi.TYPE_STRING, description="Mutuelle du patient."),
+                                "medecin_traitant": openapi.Schema(type=openapi.TYPE_STRING, description="Nom et spécialité du médecin traitant."),
+                            }
+                        )
+                    }
+                )
+            ),
+            400: "Le paramètre 'nss' est requis.",
+            403: "Seul un médecin peut effectuer cette recherche ou vous n'êtes pas le médecin traitant.",
+            404: "Patient ou dossier non trouvé.",
+        },
+    )
+    def get(self, request, *args, **kwargs):
+        """
+        Recherche un dossier patient via son numéro de sécurité sociale (NSS).
+        Vérifie que l'utilisateur connecté est un médecin et qu'il est le médecin traitant du patient.
+        """
+        # Vérifie que l'utilisateur a le rôle de médecin
+        if request.user.role != 'M':  # Supposons que le rôle 'M' correspond à médecin
+            return Response(
+                {"detail": "Seul un médecin peut effectuer cette recherche."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        # Récupère le NSS depuis les paramètres de la requête
+        nss = request.query_params.get('nss', None)
+        if not nss:
+            return Response({"detail": "Le paramètre 'nss' est requis."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Vérification que le patient existe
+        try:
+            patient = Patient.objects.get(numero_securite_sociale=nss)
+        except Patient.DoesNotExist:
+            return Response({"detail": "Aucun patient trouvé avec ce numéro de sécurité sociale."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Vérification que le médecin authentifié est le médecin traitant
+        if patient.medecin_traitant is None or patient.medecin_traitant.user != request.user:
+            return Response({"detail": "Vous n'êtes pas le médecin traitant de ce patient."}, status=status.HTTP_403_FORBIDDEN)
+
+        # Récupère le dossier patient et le sérialise
+        try:
+            dossier_patient = DossierPatient.objects.get(NSS=patient)
+        except DossierPatient.DoesNotExist:
+            return Response({"detail": "Aucun dossier trouvé pour ce patient."}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = DossierPatientSerializer(dossier_patient)
+        return Response(serializer.data)
