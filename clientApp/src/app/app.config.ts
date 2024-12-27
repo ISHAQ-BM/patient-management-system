@@ -7,6 +7,9 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 import { AuthRepository } from '../auth/domain/repositories/auth.repository';
 import { AuthImplementationRepository } from '../auth/data/repositories/auth-implementation.repository';
 import { LoginUseCase } from '../auth/domain/usecase/login.usecase';
+import { AdministratifRepository } from '../administratif/domain/repositories/administratif.repository';
+import { AdministratifImplementationRepository } from '../administratif/data/repositories/administratif-implementation.repository';
+import { CreateDPIUseCase } from '../administratif/domain/usecase/create-dpi.usecase';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,8 +17,10 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes), 
     provideClientHydration(withEventReplay()), 
     provideAnimationsAsync(),
-    { provide: AuthRepository, useClass: AuthImplementationRepository }, // Provide repository implementation
-    { provide: LoginUseCase, useClass: LoginUseCase }, // Provide use case
+    { provide: AuthRepository, useClass: AuthImplementationRepository }, 
+    { provide: LoginUseCase, useClass: LoginUseCase }, 
+     { provide: AdministratifRepository, useClass: AdministratifImplementationRepository }, 
+    { provide: CreateDPIUseCase, useClass: CreateDPIUseCase }, 
     provideHttpClient(withFetch()), provideAnimationsAsync(), provideAnimationsAsync(),
   
   ]
