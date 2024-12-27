@@ -68,6 +68,8 @@ $my-theme: mat.m2-define-light-theme(
 :root {
     @include mat.progress-spinner-overrides((active-indicator-color: white,));
     @include mat.form-field-overrides((
+      filled-active-indicator-height:0px,
+      filled-focus-active-indicator-height:0px,
         outlined-container-shape:28px 
             ));
 }
