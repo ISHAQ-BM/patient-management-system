@@ -1,92 +1,90 @@
-.content {
-  padding: 20px;
-  margin-left: 250px;
-  background-color: #ffffff;
-  min-height: 100vh;
-}
-
-.content-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.content-header h1 {
-  font-size: 24px;
-  font-weight: 600;
-  color: #1f2937;
-}
-
-.back-btn {
-  background-color: transparent;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  color: #1d4ed8;
-}
-
-.inventory-container {
-  background-color: #f9fafb;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.search-bar {
-  margin-bottom: 20px;
-}
-
-.search-input {
-  padding: 10px;
-  width: 300px;
-  border: 1px solid #d1d5db;
-  border-radius: 5px;
-}
-
-.inventory-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.inventory-table th,
-.inventory-table td {
-  padding: 10px;
-  border: 1px solid #d1d5db;
-  text-align: left;
-}
-
-.inventory-table th {
-  background-color: #f3f4f6;
-  font-weight: 600;
-}
-
-.subtext {
-  color: #6b7280;
-  font-size: 12px;
-}
-
-.pagination {
-  display: flex;
-  justify-content: flex-end;
-  gap: 5px;
-  margin-top: 20px;
-}
-
-.pagination button {
-  background-color: #f3f4f6;
-  border: 1px solid #d1d5db;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.pagination button.active {
-  background-color: #1d4ed8;
-  color: #ffffff;
-}
-
-.pagination button:hover {
-  background-color: #2563eb;
-  color: #ffffff;
-}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff; /* Fond global en blanc */
+  }
+  
+  .medicine-inventory {
+    background-color: #ffffff; /* Fond blanc pour le conteneur */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header h2 {
+    color: #337e92;
+    font-size: 1.5rem;
+    margin-bottom: 10px; /* Espace entre le titre et la ligne décorative */
+  }
+  
+  .title-line {
+    width: 100%; /* Ligne qui prend toute la largeur du conteneur */
+    height: 4px;
+    background: linear-gradient(to right, #337e92, #ccc); /* Dégradé vert et gris */
+    margin-bottom: 20px; /* Espace entre la ligne et la barre de recherche */
+    border-radius: 2px;
+  }
+  
+  .search-bar {
+    display: block;
+    width: 100%;
+    max-width: 300px; /* Barre plus petite */
+    padding: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 50px; /* Bord arrondi */
+    color: #337e92;
+  }
+  
+  .search-bar::placeholder {
+    color: #b0c4c8; /* Placeholder gris-vert */
+    font-style: italic; /* Placeholder en italique */
+  }
+  
+  .inventory-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .inventory-table th,
+  .inventory-table td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .inventory-table th {
+    background-color: #f1f5f9;
+    color: #444; /* Titre en gris légèrement foncé */
+    font-weight: bold;
+    font-family: "Arial", sans-serif; /* Style français */
+  }
+  
+  .inventory-table td {
+    color: #555; /* Contenu légèrement plus clair que les titres */
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+  }
+  
+  .pagination button {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .pagination button.active {
+    background-color: #337e92;
+    color: #fff;
+    border-color: #337e92;
+  }
+  
+  .pagination button:hover {
+    background-color: #e2e6ea;
+  }
+  

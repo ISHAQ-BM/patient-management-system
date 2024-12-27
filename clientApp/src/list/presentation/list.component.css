@@ -1,0 +1,70 @@
+/* Styles pour la carte */
+.card {
+    background-color: #ffffff; /* Fond blanc de la carte */
+    border-radius: 12px; /* Coins arrondis */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Ombre subtile */
+    padding: 20px;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto; /* Centrage */
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.back-button a {
+    text-decoration: none;
+    font-size: 24px;
+    color: #0C8193; /* Couleur du bouton retour */
+    margin-right: 15px;
+    font-weight: bold;
+}
+
+.patient-info {
+    display: flex;
+    align-items: center;
+}
+
+.patient-info img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.patient-info h2 {
+    font-size: 20px;
+    color: #364A63; /* Couleur du nom du patient */
+    font-weight: bold;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff; /* Fond blanc pour la table */
+}
+
+table th, table td {
+    text-align: left;
+    padding: 10px;
+    font-size: 14px;
+}
+
+table th {
+    background-color: #ffffff; /* Fond blanc pour les en-têtes */
+    color: #364A63; /* Couleur du texte dans les en-têtes */
+    font-weight: bold;
+    border-bottom: 2px solid #e0e0e0; /* Ligne grise sous les en-têtes */
+}
+
+table tbody tr {
+    border-bottom: 1px solid #e0e0e0; /* Ligne grise entre les consultations */
+}
+
+table td {
+    color: #526484; /* Couleur des textes */
+}

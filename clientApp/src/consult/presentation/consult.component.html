@@ -1,69 +1,90 @@
-<div class="content">
-    <header class="content-header">
-      <button class="back-btn">←</button>
-      <h1>Patients</h1>
-    </header>
-    <div class="consultation-container">
-      <div class="patient-info">
-        <img src="patient-photo.jpg" alt="Patient" class="patient-photo" />
-        <h2>Elizabeth Polson</h2>
-      </div>
-      <div class="form-container">
-        <div class="form-group">
+<div class="patient-card">
+    <div class="header">
+      <img src="https://via.placeholder.com/80" alt="Patient Photo" class="patient-photo">
+      <h2>Elizabeth Polson</h2>
+    </div>
+  
+    <div class="content">
+      <!-- Left Section -->
+      <div class="left-section">
+        <div class="section">
           <label for="diagnosis">Diagnosis</label>
-          <input type="text" id="diagnosis" class="form-input" />
+          <input type="text" id="diagnosis" placeholder="Enter diagnosis">
         </div>
-        <div class="form-group">
+  
+        <div class="section">
           <label for="observation">Observation</label>
-          <textarea id="observation" class="form-input"></textarea>
+          <textarea id="observation" rows="3" placeholder="Enter observation"></textarea>
         </div>
-        <div class="form-group">
+  
+        <div class="section">
           <label>Antecedent</label>
-          <div class="textarea-static">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas non
-            interdum sem.
+          <div class="antecedent-box">
+            Hypertension diagnosed 3 years ago, treated with Amlodipine 5 mg daily.<br>
+            No known allergies.<br>
+            No surgical history.<br>
+            Non-smoker.
           </div>
         </div>
-        <div class="form-group">
+      </div>
+  
+      <!-- Right Section -->
+      <div class="right-section">
+        <div class="section">
           <label>Complementary Exams</label>
-          <div class="exam-group">
+          <div class="row">
             <button class="exam-btn">Laboratory report</button>
-            <input type="text" class="exam-input" />
-            <button class="file-btn">📁</button>
+            <input type="text" placeholder="Blood Tests">
           </div>
-          <div class="exam-group">
+          <div class="row">
             <button class="exam-btn">Radiology report</button>
-            <input type="text" class="exam-input" />
-            <button class="file-btn">📁</button>
+            <input type="text" placeholder="Chest X-ray">
           </div>
         </div>
-        <div class="form-group">
+  
+        <div class="section">
           <label>Prescription</label>
-          <div class="prescription-group">
+          <div class="row">
             <div>
               <label for="duration">Duration</label>
-              <div class="duration-group">
-                <button class="duration-btn">-</button>
-                <input type="text" id="duration" class="duration-input" />
-                <button class="duration-btn">+</button>
+              <div class="duration">
+                <button>-</button>
+                <input type="number" id="duration" value="7">
+                <button>+</button>
+                <select>
+                  <option>Days</option>
+                  <option>Weeks</option>
+                  <option>Months</option>
+                </select>
               </div>
             </div>
             <div>
               <label for="dose">Dose</label>
-              <input type="text" id="dose" class="form-input" />
+              <input type="text" id="dose" placeholder="Enter dose">
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label for="medecin">Medecin</label>
+              <input type="text" id="medecin" value="Amoxicillin-Clavulanate">
             </div>
             <div>
               <label for="frequency">Frequency</label>
-              <input type="text" id="frequency" class="form-input" />
+              <input type="text" id="frequency" placeholder="Enter frequency">
             </div>
           </div>
         </div>
-        <div class="form-group">
-          <label for="summary">Consultation Summary</label>
-          <textarea id="summary" class="form-input"></textarea>
+  
+        <div class="section">
+          <label>Consultation Summary</label>
+          <textarea rows="3" placeholder="Enter summary here"></textarea>
         </div>
-        <button class="submit-btn">Submit</button>
       </div>
+    </div>
+  
+    <!-- Footer -->
+    <div class="footer">
+      <button class="submit-btn">Submit</button>
     </div>
   </div>
   

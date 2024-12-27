@@ -1,149 +1,165 @@
-.content {
-    padding: 20px;
-    margin-left: 250px;
-    background-color: #ffffff;
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f7fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     min-height: 100vh;
+    margin: 0;
   }
   
-  .content-header {
+  .patient-card {
+    background-color: #ffffff;
+    width: 900px;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+  }
+  
+  .patient-card .header {
     display: flex;
     align-items: center;
-    gap: 10px;
     margin-bottom: 20px;
   }
   
-  .content-header h1 {
-    font-size: 24px;
-    font-weight: 600;
-    color: #1f2937;
-  }
-  
-  .back-btn {
-    background-color: transparent;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    color: #1d4ed8;
-  }
-  
-  .consultation-container {
-    background-color: #f9fafb;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 20px;
-  }
-  
-  .patient-info {
-    text-align: center;
-  }
-  
-  .patient-photo {
-    width: 100px;
-    height: 100px;
+  .patient-card .patient-photo {
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
-    margin-bottom: 10px;
+    margin-right: 15px;
   }
   
-  .patient-info h2 {
-    font-size: 18px;
-    font-weight: 600;
-    color: #1f2937;
+  .patient-card h2 {
+    font-size: 1.2rem;
+    color: #333333;
   }
   
-  .form-container {
+  .patient-card .content {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
+    justify-content: space-between;
   }
   
-  .form-group {
-    display: flex;
-    flex-direction: column;
+  .left-section {
+    flex: 1;
+    max-width: 30%;
+    margin-right: 20px;
   }
   
-  .form-group label {
-    font-size: 14px;
-    font-weight: 600;
-    color: #1f2937;
+  .right-section {
+    flex: 2;
+  }
+  
+  .patient-card .section {
+    margin-bottom: 15px;
+  }
+  
+  .patient-card label {
+    font-size: 0.85rem;
+    color: #337e92;
+    font-weight: bold;
     margin-bottom: 5px;
+    display: block;
   }
   
-  .form-input {
-    padding: 10px;
-    border: 1px solid #d1d5db;
-    border-radius: 5px;
-  }
-  
-  .textarea-static {
-    background-color: #e5e7eb;
-    padding: 10px;
-    border-radius: 5px;
-    color: #6b7280;
-  }
-  
-  .exam-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  .patient-card input,
+  .patient-card textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.85rem;
     margin-top: 5px;
   }
   
-  .exam-btn,
-  .file-btn {
-    background-color: #1d4ed8;
-    color: #ffffff;
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
+  .patient-card textarea {
+    resize: none;
   }
   
-  .exam-input {
-    flex: 1;
+  .patient-card .antecedent-box {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
     padding: 10px;
-    border: 1px solid #d1d5db;
-    border-radius: 5px;
+    color: #555555;
+    font-size: 0.85rem;
   }
   
-  .prescription-group {
+  .patient-card .row {
     display: flex;
-    align-items: flex-start;
-    gap: 20px;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
   }
   
-  .duration-group {
+  .patient-card .row button.exam-btn {
+    width: 30%; /* 1/3 for buttons */
+    background-color: #337e92;
+    color: #ffffff;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+  }
+  
+  .patient-card .row input {
+    width: 65%; /* 2/3 for inputs */
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  
+  .patient-card .row button.exam-btn:hover {
+    background-color: #286572;
+  }
+  
+  .patient-card .prescription-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  
+  .patient-card .prescription-row input,
+  .patient-card .duration select {
+    padding: 6px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    width: 100%;
+    font-size: 0.85rem;
+  }
+  
+  .patient-card .duration {
     display: flex;
     align-items: center;
     gap: 5px;
   }
   
-  .duration-btn {
-    background-color: #1d4ed8;
-    color: #ffffff;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .duration-input {
+  .patient-card .duration input {
     width: 50px;
     text-align: center;
-    border: 1px solid #d1d5db;
-    border-radius: 5px;
-    padding: 5px;
   }
   
-  .submit-btn {
-    background-color: #1d4ed8;
+  .patient-card .footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+  }
+  
+  .patient-card .submit-btn {
+    padding: 6px 12px;
+    background-color: #337e92;
     color: #ffffff;
-    padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
+    font-size: 0.85rem;
     cursor: pointer;
-    align-self: flex-end;
+  }
+  
+  .patient-card .submit-btn:hover {
+    background-color: #286572;
   }
   
