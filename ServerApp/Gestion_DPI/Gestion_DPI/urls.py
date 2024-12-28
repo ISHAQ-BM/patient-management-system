@@ -32,6 +32,7 @@ from rest_framework.routers import DefaultRouter
 from authentification.views import AuthenticationViewSet
 from Med_Patient.views import PersonnelAdministratifViewSet
 from Med_Patient.views import RechercherDossierPatientAPIView
+from Soins_Exams_Patient.views import RechercherDossierPatientInfirmierAPIView
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -62,4 +63,5 @@ urlpatterns = [
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('api/Med_Patient/RechercheNSS/', RechercherDossierPatientAPIView.as_view(), name='rechercher-dossier-patient'),
+    path('api/Soins_Exams_Patient/RechercheNSS/', RechercherDossierPatientInfirmierAPIView.as_view(), name='rechercher_dossier_infirmier'),
     ]

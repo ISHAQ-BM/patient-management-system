@@ -27,3 +27,12 @@ class LaborantainRadiologue(models.Model):
 
     def __str__(self):
         return f"{self.role}: {self.user.get_full_name()}"
+class Soin(models.Model):
+    
+    dossier_patient = models.ForeignKey('Med_Patient.DossierPatient', on_delete=models.CASCADE, related_name="soins")
+    infirmier = models.ForeignKey(Infirmier, on_delete=models.CASCADE, related_name="soins", null=True, blank=True)
+    date_soin = models.DateField()
+    description = models.TextField(null=True, blank=True)
+    observation = models.TextField(null=True, blank=True)
+    def __str__(self):
+        return f"Soin de {self.dossier_patient} - {self.date_soin}"

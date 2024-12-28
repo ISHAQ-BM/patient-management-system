@@ -1,5 +1,6 @@
 from django.db import models
 from authentification.models import User
+from Soins_Exams_Patient.models import Soin
 
 class PersonnelAdministratif(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
@@ -116,11 +117,11 @@ class Ordonnance(models.Model):
 
 class Medicament(models.Model):
     # Nom du médicament
-    nom = models.CharField(max_length=255, unique=True)
+    nom = models.CharField(max_length=255)
     
     # Description facultative du médicament
     description = models.TextField(null=True, blank=True)
-
+    soin = models.ForeignKey(Soin,on_delete=models.SET_NULL,null=True,blank=True,related_name="medicaments")
     def __str__(self):
         return self.nom    
 
