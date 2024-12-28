@@ -10,6 +10,9 @@ import { LoginUseCase } from '../auth/domain/usecase/login.usecase';
 import { AdministratifRepository } from '../administratif/domain/repositories/administratif.repository';
 import { AdministratifImplementationRepository } from '../administratif/data/repositories/administratif-implementation.repository';
 import { CreateDPIUseCase } from '../administratif/domain/usecase/create-dpi.usecase';
+import { PatientRepository } from '../patient/domain/repositories/patient.repository';
+import { PatientImplementationRepository } from '../patient/data/repositories/patient-implementation.repository';
+import { GetDPIUseCase } from '../patient/domain/usecase/getDpi.usecase';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,6 +24,8 @@ export const appConfig: ApplicationConfig = {
     { provide: LoginUseCase, useClass: LoginUseCase }, 
      { provide: AdministratifRepository, useClass: AdministratifImplementationRepository }, 
     { provide: CreateDPIUseCase, useClass: CreateDPIUseCase }, 
+    { provide: PatientRepository, useClass: PatientImplementationRepository }, 
+    { provide: GetDPIUseCase, useClass: GetDPIUseCase }, 
     provideHttpClient(withFetch()), provideAnimationsAsync(), provideAnimationsAsync(),
   
   ]
