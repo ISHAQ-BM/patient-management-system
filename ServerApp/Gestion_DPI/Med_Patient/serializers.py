@@ -65,12 +65,8 @@ class DossierPatientSerializer(serializers.ModelSerializer):
     class Meta:
         model = DossierPatient
 
-<<<<<<< HEAD
 
         fields = ['id','NSS', 'date_derniere_mise_a_jour','antecedents', 'patient_info']
-=======
-        fields = ['id','NSS', 'date_derniere_mise_a_jour','antecedents', 'patient_info',]
->>>>>>> 1c8873573cd4cda33ec147f54291f6b528e2c5f1
 
     def get_patient_info(self, obj):
         """
@@ -218,11 +214,3 @@ class ConsultationCreateSerializer(serializers.ModelSerializer):
                 "Le résumé de la consultation est obligatoire"
             )
         return data
-class ConsultationSerializer(serializers.ModelSerializer):
-    """
-    Sérialiseur pour le modèle Consultation.
-    """
-
-    class Meta:
-        model = Consultation
-        fields = ['id', 'dossier_patient', 'medecin', 'date_consultation', 'diagnostic', 'resume']
