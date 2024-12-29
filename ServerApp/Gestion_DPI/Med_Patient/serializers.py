@@ -213,3 +213,11 @@ class ConsultationCreateSerializer(serializers.ModelSerializer):
                 "Le résumé de la consultation est obligatoire"
             )
         return data
+class ConsultationSerializer(serializers.ModelSerializer):
+    """
+    Sérialiseur pour le modèle Consultation.
+    """
+
+    class Meta:
+        model = Consultation
+        fields = ['id', 'dossier_patient', 'medecin', 'date_consultation', 'diagnostic', 'resume']

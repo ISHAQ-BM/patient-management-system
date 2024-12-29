@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 
 from .models import DossierPatient, Patient,Medecin
 from rest_framework import status
-from .serializers import ConsultationCreateSerializer, PatientDossierSerializer, UserSerializer, PatientSerializer, DossierPatientSerializer
+from .serializers import ConsultationCreateSerializer, PatientDossierSerializer, UserSerializer, PatientSerializer, DossierPatientSerializer , ConsultationSerializer
 from .permissions import IsPersonnelAdministratif
 from django.db import transaction
 from datetime import date
@@ -709,3 +709,75 @@ class RechercherDossierPatientAPIView(APIView):
 
         serializer = DossierPatientSerializer(dossier_patient)
         return Response(serializer.data)
+class ConsultationParIndexAPIView(APIView):
+    """
+    API permettant de récupérer une consultation spécifique d'un dossier patient en fonction de l'ordre d'apparition de la consultation.
+    L'index commence à 1.
+    """
+    permission_classes = [IsAuthenticated]
+
+    @swagger_auto_schema(
+        operation_description="Récupère la consultation spécifiée par l'index dans la liste des consultations associées au dossier patient.",
+        manual_parameters=[
+            openapi.Parameter(
+                'dossier_patient_id', openapi.IN_QUERY, description="ID du dossier patient", type=openapi.TYPE_INTEGER, required=True
+            ),
+            openapi.Parameter(
+                'index', openapi.IN_QUERY, description="Index de la consultation dans la liste des consultations", type=openapi.TYPE_INTEGER, required=True
+            ),
+        ],
+        responses={
+            200: ConsultationSerializer(),
+            400: "Les paramètres 'dossier_patient_id' et 'index' sont requis.",
+            404: "Dossier patient ou consultation non trouvée.",
+        },
+    )
+    def get(self, request, *args, **kwargs):
+        """
+        Récupère la consultation spécifiée par l'index dans la liste des consultations associées au dossier patient.
+        """
+        # Récupérer l'id du dossier patient et l'index de la consultation
+        dossier_patient_id = request.query_params.get('dossier_patient_id')
+        index = request.query_params.get('index')
+
+        # Vérifier que l'id du dossier patient et l'index sont fournis
+        if not dossier_patient_id or not index:
+            return Response(
+                {"detail": "Les paramètres 'dossier_patient_id' et 'index' sont requis."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Vérifier que l'index est un entier
+        try:
+            index = int(index)
+        except ValueError:
+            return Response(
+                {"detail": "L'index doit être un nombre entier."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Vérifier que le dossier patient existe
+        try:
+            dossier_patient = DossierPatient.objects.get(id=dossier_patient_id)
+        except DossierPatient.DoesNotExist:
+            return Response(
+                {"detail": "Dossier patient non trouvé."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Récupérer la liste des consultations associées à ce dossier patient, ordonnée par la date de consultation (ou selon un autre critère)
+        consultations = dossier_patient.consultations.all().order_by('date_consultation')
+
+        # Vérifier que l'index est valide (dans les limites de la liste des consultations)
+        if index < 1 or index > len(consultations):
+            return Response(
+                {"detail": f"Il n'y a pas de consultation à l'index {index} pour ce dossier patient."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Récupérer la consultation à l'index spécifié
+        consultation = consultations[index - 1]  # L'index commence à 1, donc on soustrait 1 pour accéder à l'élément de la liste
+
+        # Sérialiser la consultation et renvoyer la réponse
+        serializer = ConsultationSerializer(consultation)
+        return Response(serializer.data, status=status.HTTP_200_OK)
