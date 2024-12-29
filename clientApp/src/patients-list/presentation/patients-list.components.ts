@@ -1,9 +1,11 @@
-import { AfterViewInit, Component, Sanitizer, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, inject, Sanitizer, ViewChild } from "@angular/core";
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { MatFormField, MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatIconModule } from "@angular/material/icon";
 import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
+import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { SearchDPIUseCase } from "../domain/usecase/searchDPIByNSS.usecase";
 
 
 export interface PeriodicElement {
@@ -37,11 +39,16 @@ const ELEMENT_DATA: PeriodicElement[] = [
   selector: 'patients-list',
   templateUrl: './patients-list.component.html',
   styleUrl: './patients-list.component.css',
-  imports:[MatTableModule,MatFormFieldModule, MatInputModule, MatIconModule,MatPaginatorModule]
+  imports:[ReactiveFormsModule,MatTableModule,MatFormFieldModule, MatInputModule, MatIconModule,MatPaginatorModule,FormsModule]
   
 })
 
-export class PatientsList implements AfterViewInit{
+export class PatientsListComponent implements AfterViewInit{
+
+
+  
+        private searchDPIUseCase = inject(SearchDPIUseCase); 
+
     displayedColumns: string[] = ['patientName', 'age', 'gender', 'bloodGroup','phoneNumber','emailID'];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
 
@@ -51,8 +58,9 @@ export class PatientsList implements AfterViewInit{
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
-  onInput(event: any) {     
-   console.log(event.target.value);
-  
-}
+  searchControl = new FormControl('');
+
+  onSearch() {
+    this.searchDPIUseCase.execute(this.searchControl.value)
+  }
 }

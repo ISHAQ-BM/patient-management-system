@@ -1,12 +1,12 @@
 <div>
 
     
-    <mat-form-field appearance="fill" class="hh">
-    <input matInput placeholder="Seach">
+    <mat-form-field appearance="fill">
+    <input matInput [formControl]="searchControl" placeholder="Seach">
     <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
 
-    <button class="button">
+    <button class="button" (click)="onSearch()">
         <mat-icon matSuffix>search</mat-icon>
     </button>
 

@@ -14,9 +14,6 @@ export class DoctorImplementationRepository extends DoctorRepository {
     override getDPI(params: {}): Promise<{}> {
         throw new Error("Method not implemented.");
     }
-    override searchDPI(params: {}): Promise<{}> {
-        throw new Error("Method not implemented.");
-    }
 
     override writePrescription(params: unknown): Promise<{}> {
         throw new Error("Method not implemented.");
