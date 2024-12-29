@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import User
-from Med_Patient.models import Medecin,Medicament,MedicamentOrdonnance,User,Patient,PersonnelAdministratif,DossierPatient
+from Med_Patient.models import Medecin,Medicament,MedicamentOrdonnance,User,Patient,PersonnelAdministratif,DossierPatient,Consultation
 from Soins_Exams_Patient.models import Infirmier,Soin
 
 @admin.register(User)
@@ -17,3 +17,4 @@ admin.site.register(PersonnelAdministratif)
 admin.site.register(DossierPatient)
 admin.site.register(Infirmier)
 admin.site.register(Soin)
+admin.site.register(Consultation)

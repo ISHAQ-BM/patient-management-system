@@ -44,7 +44,10 @@ INSTALLED_APPS = [
     'drf_yasg',
     'Med_Patient',
     'Soins_Exams_Patient'
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1c8873573cd4cda33ec147f54291f6b528e2c5f1
 ]
 
 CORS_ALLOWED_ORIGINS = [
