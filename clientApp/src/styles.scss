@@ -2,6 +2,13 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap");
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html {
   @include mat.theme(
     (
@@ -61,6 +68,8 @@ $my-theme: mat.m2-define-light-theme(
 :root {
     @include mat.progress-spinner-overrides((active-indicator-color: white,));
     @include mat.form-field-overrides((
+      filled-active-indicator-height:0px,
+      filled-focus-active-indicator-height:0px,
         outlined-container-shape:28px 
             ));
 }

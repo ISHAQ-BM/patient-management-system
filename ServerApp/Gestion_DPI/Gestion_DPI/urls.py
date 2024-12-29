@@ -16,7 +16,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from authentification import views
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -33,12 +32,16 @@ from authentification.views import AuthenticationViewSet
 from Med_Patient.views import PersonnelAdministratifViewSet
 from Med_Patient.views import RechercherDossierPatientAPIView
 from Soins_Exams_Patient.views import RechercherDossierPatientInfirmierAPIView
+from Med_Patient.views import PatientDossierViewSet
+from authentification.views import RegisterView
+from Med_Patient.views import ConsultationViewSet
+
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="Authentification",
+      title="Gestion DPI",
       default_version='v1',
-      description="API consacrée à l'authentification d'un utilisateur",
+      description="API consacrée à la gestion du DPI des patients",
       terms_of_service="https://www.google.com/policies/terms/",
       contact=openapi.Contact(email="contact@votreapi.local"),
       license=openapi.License(name="BSD License"),
@@ -49,13 +52,16 @@ schema_view = get_schema_view(
 
 
 router = DefaultRouter()
-router.register(r'auth', AuthenticationViewSet, basename='authentication')
+router.register(r'auth', AuthenticationViewSet, basename='authentification')
 router.register(r'personnel', PersonnelAdministratifViewSet, basename='personnel')
+router.register(r'mon-dossier', PatientDossierViewSet, basename='patient-dossier')
+router.register(r'Consultation', ConsultationViewSet, basename='consultation')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('api/', include(router.urls)),
+    path('register/', RegisterView.as_view(), name='register'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # Obtenir les tokens
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # Rafraîchir le token
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),    # Vérifier le token

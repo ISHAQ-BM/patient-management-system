@@ -41,6 +41,13 @@
     border-radius: 5px;
     cursor: pointer;
   }
+
+
+
+.button{
+    
+    background-color: #00b4b6;
+}
   
   .search-btn:hover,
   .qr-search-btn:hover {

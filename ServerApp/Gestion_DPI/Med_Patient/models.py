@@ -77,11 +77,15 @@ class Patient(models.Model):
         return f"{self.user.first_name} "
     
 class DossierPatient(models.Model):
+
     # Relation 1 à 1 avec le modèle Patient via le NSS
     NSS = models.OneToOneField(Patient, on_delete=models.CASCADE, unique=True)
     
     # Date de dernière mise à jour du dossier
     date_derniere_mise_a_jour = models.DateField(auto_now=True)
+
+    #Les antécédants du patient
+    antecedents = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f"Dossier de {self.NSS.get_nom()} {self.NSS.get_prenom()} - Dernière mise à jour: {self.date_derniere_mise_a_jour}"
@@ -90,15 +94,15 @@ class Consultation(models.Model):
 
     # Clé étrangère vers DossierPatient
     dossier_patient = models.ForeignKey(DossierPatient, on_delete=models.CASCADE, related_name="consultations")
+
+    # Clé étrangère vers Medecin
+    medecin = models.ForeignKey(Medecin, on_delete=models.CASCADE, related_name="consultations", null=True, blank=True)
     
     # Date de la consultation
     date_consultation = models.DateField()
     
     # Diagnostic de la consultation
     diagnostic = models.TextField(null=True, blank=True)
-
-    #Les antécédants du patient
-    antecedents = models.TextField(null=True, blank=True)
     
     # Résumé obligatoire contenant les antécédents
     resume = models.TextField(null=False, blank=False)
@@ -111,6 +115,8 @@ class Ordonnance(models.Model):
         on_delete=models.CASCADE, 
         related_name="ordonnance"
     )
+
+    description = models.TextField(null=True, blank=True)
     
     # Date de l'ordonnance
     date_ordonnance = models.DateField(auto_now_add=True)
