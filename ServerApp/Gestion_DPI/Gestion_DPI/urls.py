@@ -30,9 +30,12 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from authentification.views import AuthenticationViewSet
 from Med_Patient.views import PersonnelAdministratifViewSet
+from Med_Patient.views import RechercherDossierPatientAPIView,ConsultationParIndexAPIView
+from Soins_Exams_Patient.views import RechercherDossierPatientInfirmierAPIView,SoinParIndexAPIView
 from Med_Patient.views import PatientDossierViewSet
 from authentification.views import RegisterView
 from Med_Patient.views import ConsultationViewSet
+
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -65,4 +68,8 @@ urlpatterns = [
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-]
+    path('api/Med_Patient/RechercheNSS/', RechercherDossierPatientAPIView.as_view(), name='rechercher-dossier-patient'),
+    path('api/Soins_Exams_Patient/RechercheNSS/', RechercherDossierPatientInfirmierAPIView.as_view(), name='rechercher_dossier_infirmier'),
+    path('api/Soins_Exams_Patient/soin-par-index/', SoinParIndexAPIView.as_view(), name="soin_par_index"),
+    path('api/Med_Patient/consultation-par-index/', ConsultationParIndexAPIView.as_view(), name="soin_par_index"),
+    ]

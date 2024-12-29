@@ -59,24 +59,64 @@ class PatientSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(f"Erreur lors de la création du patient: {str(e)}")
     
 class DossierPatientSerializer(serializers.ModelSerializer):
+    # Champ supplémentaire pour inclure les informations du patient
+    patient_info = serializers.SerializerMethodField()
+
     class Meta:
         model = DossierPatient
-        fields = ['NSS', 'date_derniere_mise_a_jour', 'antecedents']
+
+        fields = ['id','NSS', 'date_derniere_mise_a_jour','antecedents', 'patient_info',]
+
+    def get_patient_info(self, obj):
+        """
+        Retourne les informations du patient associé à ce dossier.
+        """
+        patient = obj.NSS
+        return {
+            'numero_securite_sociale': patient.numero_securite_sociale,
+            'nom': patient.get_nom(),
+            'prenom': patient.get_prenom(),
+            'date_naissance': patient.date_naissance,
+            'adresse': patient.adresse,
+            'telephone': patient.telephone,
+            'mutuelle': patient.mutuelle,
+            'medecin_traitant': str(patient.medecin_traitant) if patient.medecin_traitant else None
+        }
+
 
     def validate_NSS(self, value):
-        # Vérification que le NSS correspond à un patient existant
-        if not Patient.objects.filter(numero_securite_sociale=value).exists():
+        """
+        Vérifie que le NSS correspond à un patient existant et que le médecin authentifié est le médecin traitant.
+        """
+        try:
+            patient = Patient.objects.get(numero_securite_sociale=value)
+        except Patient.DoesNotExist:
             raise serializers.ValidationError(
                 "Aucun patient trouvé avec ce numéro de sécurité sociale."
             )
-        # Vérification qu'un dossier n'existe pas déjà pour ce NSS
-        if DossierPatient.objects.filter(NSS=value).exists():
+
+        # Vérifie que le médecin authentifié est bien le médecin traitant
+        if patient.medecin_traitant is None or patient.medecin_traitant.user != self.context['request'].user:
             raise serializers.ValidationError(
-                "Un dossier existe déjà pour ce patient."
+                "Vous n'êtes pas le médecin traitant de ce patient."
             )
         return value
 
+    def validate(self, data):
+        """
+        Validation supplémentaire pour s'assurer qu'un dossier n'existe pas déjà pour ce patient.
+        """
+        nss = data.get('NSS')
+        if DossierPatient.objects.filter(NSS=nss).exists():
+            raise serializers.ValidationError(
+                {"NSS": "Un dossier existe déjà pour ce patient."}
+            )
+        return data
+
     def create(self, validated_data):
+        """
+        Création d'un dossier patient.
+        """
         try:
             dossier = DossierPatient.objects.create(**validated_data)
             return dossier
@@ -173,3 +213,11 @@ class ConsultationCreateSerializer(serializers.ModelSerializer):
                 "Le résumé de la consultation est obligatoire"
             )
         return data
+class ConsultationSerializer(serializers.ModelSerializer):
+    """
+    Sérialiseur pour le modèle Consultation.
+    """
+
+    class Meta:
+        model = Consultation
+        fields = ['id', 'dossier_patient', 'medecin', 'date_consultation', 'diagnostic', 'resume']

@@ -2,8 +2,12 @@ from django.forms import ValidationError
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.views import APIView
+
+from .models import DossierPatient, Patient,Medecin
 from rest_framework import status
-from .serializers import ConsultationCreateSerializer, PatientDossierSerializer, UserSerializer, PatientSerializer, DossierPatientSerializer
+from .serializers import ConsultationCreateSerializer, PatientDossierSerializer, UserSerializer, PatientSerializer, DossierPatientSerializer , ConsultationSerializer
 from .permissions import IsPersonnelAdministratif
 from django.db import transaction
 from datetime import date
@@ -202,6 +206,7 @@ class PersonnelAdministratifViewSet(viewsets.ViewSet):
                 {'error': f'Une erreur est survenue: {str(e)}'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
         
 
 class PatientDossierViewSet(viewsets.ReadOnlyModelViewSet):
@@ -253,10 +258,12 @@ class PatientDossierViewSet(viewsets.ReadOnlyModelViewSet):
                 description="Token JWT Bearer. Ex: Bearer {token}",
                 type=openapi.TYPE_STRING,
                 required=True
+
             )
         ],
         responses={
             200: openapi.Response(
+
                 description="Dossier détaillé récupéré avec succès",
                 schema=openapi.Schema(
                     type=openapi.TYPE_OBJECT,
@@ -323,11 +330,13 @@ class PatientDossierViewSet(viewsets.ReadOnlyModelViewSet):
                                         }
                                     )
                                 )
+
                             }
                         )
                     }
                 )
             ),
+
             401: "Non authentifié",
             403: "Pas les permissions requises (rôle patient requis)",
             404: "Patient non trouvé"
@@ -621,3 +630,154 @@ Grippe saisonnière de type A
                 ])
 
         return "\n".join(s for s in resume_sections if s)           
+
+class RechercherDossierPatientAPIView(APIView):
+    permission_classes = [IsAuthenticated]  # Vérifie que l'utilisateur est authentifié
+
+    @swagger_auto_schema(
+        operation_description="Recherche un dossier patient via son numéro de sécurité sociale (NSS).",
+        manual_parameters=[
+            openapi.Parameter(
+                'nss',
+                openapi.IN_QUERY,
+                description="Numéro de sécurité sociale du patient à rechercher.",
+                type=openapi.TYPE_STRING,
+                required=True,
+            )
+        ],
+        responses={
+            200: openapi.Response(
+                description="Dossier patient et informations associées.",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        "NSS": openapi.Schema(type=openapi.TYPE_STRING, description="Numéro de sécurité sociale du patient."),
+                        "date_derniere_mise_a_jour": openapi.Schema(type=openapi.TYPE_STRING, format="date", description="Date de dernière mise à jour du dossier."),
+                        "patient_info": openapi.Schema(
+                            type=openapi.TYPE_OBJECT,
+                            properties={
+                                "numero_securite_sociale": openapi.Schema(type=openapi.TYPE_STRING, description="Numéro de sécurité sociale."),
+                                "nom": openapi.Schema(type=openapi.TYPE_STRING, description="Nom du patient."),
+                                "prenom": openapi.Schema(type=openapi.TYPE_STRING, description="Prénom du patient."),
+                                "date_naissance": openapi.Schema(type=openapi.TYPE_STRING, format="date", description="Date de naissance."),
+                                "adresse": openapi.Schema(type=openapi.TYPE_STRING, description="Adresse du patient."),
+                                "telephone": openapi.Schema(type=openapi.TYPE_STRING, description="Téléphone du patient."),
+                                "mutuelle": openapi.Schema(type=openapi.TYPE_STRING, description="Mutuelle du patient."),
+                                "medecin_traitant": openapi.Schema(type=openapi.TYPE_STRING, description="Nom et spécialité du médecin traitant."),
+                            }
+                        )
+                    }
+                )
+            ),
+            400: "Le paramètre 'nss' est requis.",
+            403: "Seul un médecin peut effectuer cette recherche ou vous n'êtes pas le médecin traitant.",
+            404: "Patient ou dossier non trouvé.",
+        },
+    )
+    def get(self, request, *args, **kwargs):
+        """
+        Recherche un dossier patient via son numéro de sécurité sociale (NSS).
+        Vérifie que l'utilisateur connecté est un médecin et qu'il est le médecin traitant du patient.
+        """
+        # Vérifie que l'utilisateur a le rôle de médecin
+        if request.user.role != 'M':  # Supposons que le rôle 'M' correspond à médecin
+            return Response(
+                {"detail": "Seul un médecin peut effectuer cette recherche."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        # Récupère le NSS depuis les paramètres de la requête
+        nss = request.query_params.get('nss', None)
+        if not nss:
+            return Response({"detail": "Le paramètre 'nss' est requis."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Vérification que le patient existe
+        try:
+            patient = Patient.objects.get(numero_securite_sociale=nss)
+        except Patient.DoesNotExist:
+            return Response({"detail": "Aucun patient trouvé avec ce numéro de sécurité sociale."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Vérification que le médecin authentifié est le médecin traitant
+        if patient.medecin_traitant is None or patient.medecin_traitant.user != request.user:
+            return Response({"detail": "Vous n'êtes pas le médecin traitant de ce patient."}, status=status.HTTP_403_FORBIDDEN)
+
+        # Récupère le dossier patient et le sérialise
+        try:
+            dossier_patient = DossierPatient.objects.get(NSS=patient)
+        except DossierPatient.DoesNotExist:
+            return Response({"detail": "Aucun dossier trouvé pour ce patient."}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = DossierPatientSerializer(dossier_patient)
+        return Response(serializer.data)
+class ConsultationParIndexAPIView(APIView):
+    """
+    API permettant de récupérer une consultation spécifique d'un dossier patient en fonction de l'ordre d'apparition de la consultation.
+    L'index commence à 1.
+    """
+    permission_classes = [IsAuthenticated]
+
+    @swagger_auto_schema(
+        operation_description="Récupère la consultation spécifiée par l'index dans la liste des consultations associées au dossier patient.",
+        manual_parameters=[
+            openapi.Parameter(
+                'dossier_patient_id', openapi.IN_QUERY, description="ID du dossier patient", type=openapi.TYPE_INTEGER, required=True
+            ),
+            openapi.Parameter(
+                'index', openapi.IN_QUERY, description="Index de la consultation dans la liste des consultations", type=openapi.TYPE_INTEGER, required=True
+            ),
+        ],
+        responses={
+            200: ConsultationSerializer(),
+            400: "Les paramètres 'dossier_patient_id' et 'index' sont requis.",
+            404: "Dossier patient ou consultation non trouvée.",
+        },
+    )
+    def get(self, request, *args, **kwargs):
+        """
+        Récupère la consultation spécifiée par l'index dans la liste des consultations associées au dossier patient.
+        """
+        # Récupérer l'id du dossier patient et l'index de la consultation
+        dossier_patient_id = request.query_params.get('dossier_patient_id')
+        index = request.query_params.get('index')
+
+        # Vérifier que l'id du dossier patient et l'index sont fournis
+        if not dossier_patient_id or not index:
+            return Response(
+                {"detail": "Les paramètres 'dossier_patient_id' et 'index' sont requis."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Vérifier que l'index est un entier
+        try:
+            index = int(index)
+        except ValueError:
+            return Response(
+                {"detail": "L'index doit être un nombre entier."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Vérifier que le dossier patient existe
+        try:
+            dossier_patient = DossierPatient.objects.get(id=dossier_patient_id)
+        except DossierPatient.DoesNotExist:
+            return Response(
+                {"detail": "Dossier patient non trouvé."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Récupérer la liste des consultations associées à ce dossier patient, ordonnée par la date de consultation (ou selon un autre critère)
+        consultations = dossier_patient.consultations.all().order_by('date_consultation')
+
+        # Vérifier que l'index est valide (dans les limites de la liste des consultations)
+        if index < 1 or index > len(consultations):
+            return Response(
+                {"detail": f"Il n'y a pas de consultation à l'index {index} pour ce dossier patient."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Récupérer la consultation à l'index spécifié
+        consultation = consultations[index - 1]  # L'index commence à 1, donc on soustrait 1 pour accéder à l'élément de la liste
+
+        # Sérialiser la consultation et renvoyer la réponse
+        serializer = ConsultationSerializer(consultation)
+        return Response(serializer.data, status=status.HTTP_200_OK)
