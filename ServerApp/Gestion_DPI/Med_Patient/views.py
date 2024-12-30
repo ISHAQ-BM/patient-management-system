@@ -392,9 +392,9 @@ class ConsultationViewSet(viewsets.ModelViewSet):
                 items=openapi.Schema(
                     type=openapi.TYPE_OBJECT,
                     properties={
-                        "nom_medicament": openapi.Schema(
+                        "medicament_id": openapi.Schema(
                             type=openapi.TYPE_STRING,
-                            example="Doliprane"
+                            example="1"
                         ),
                         "dose": openapi.Schema(
                             type=openapi.TYPE_STRING,
@@ -526,12 +526,16 @@ Grippe saisonnière de type A
 
     @action(detail=False, methods=['post'])
     def creer_consultation(self, request):
-        # Récupérer le patient et vérifier le médecin traitant
-        nss = request.data.get('nss')
-        patient = get_object_or_404(Patient, numero_securite_sociale=nss)
+
+        try:
+            # Récupérer le patient et vérifier le médecin traitant
+            nss = request.data.get('nss')
+            patient = get_object_or_404(Patient, numero_securite_sociale=nss)
         
-        if patient.medecin_traitant_id != request.user.medecin.id:
-            raise ValidationError("Vous devez être le médecin traitant du patient")
+            if patient.medecin_traitant_id != request.user.medecin.id:
+                raise ValidationError("Vous devez être le médecin traitant du patient")
+        except ValidationError as e:
+            return Response({'error': str(e)}, status=status.HTTP_403_FORBIDDEN)
 
         # Récupérer le dossier patient
         dossier = get_object_or_404(DossierPatient, NSS=patient)
@@ -569,7 +573,7 @@ Grippe saisonnière de type A
             )
             
             for med_data in request.data.get('medicaments', []):
-                medicament = get_object_or_404(Medicament, nom=med_data['nom_medicament'])
+                medicament = get_object_or_404(Medicament, id=med_data['medicament_id'])
                 MedicamentOrdonnance.objects.create(
                     medicament=medicament,
                     ordonnance=ordonnance,
@@ -604,8 +608,9 @@ Grippe saisonnière de type A
 
         if medicaments:
             for med in medicaments:
+                medicament = get_object_or_404(Medicament, id=med['medicament_id'])
                 resume_sections.append(
-                    f"- {med['nom_medicament']}: {med['dose']}, "
+                    f"- {medicament.nom}: {med['dose']}, "
                     f"{med['frequence']} pendant {med['duree']}"
                 )
 
