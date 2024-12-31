@@ -83,10 +83,10 @@ export class PatientsListComponent implements AfterViewInit{
   return {
     patientName: `${result.patient_info.nom} ${result.patient_info.prenom}`,
     age: this.calculateAge(result.patient_info.date_naissance).toString(),
-    gender: result.gender || 'N/A', // Adjust according to your data
-    bloodGroup: result.bloodGroup || 'N/A', // Adjust according to your data
+    gender: result.gender || 'N/A',
+    bloodGroup: result.bloodGroup || 'N/A', 
     phoneNumber: result.patient_info.telephone,
-    emailID: result.patient_info.medecin_traitant.split(' - ')[0], // Extract email if structured like "email - specialization"
+    emailID: result.patient_info.medecin_traitant.split(' - ')[0], 
   };
 }
 

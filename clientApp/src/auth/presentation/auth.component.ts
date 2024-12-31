@@ -34,6 +34,7 @@ export class AuthComponent {
    isLoading = false;
 
   constructor(private fb: FormBuilder, private router: Router) { 
+  //localStorage.clear()
     this.authForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -49,7 +50,7 @@ export class AuthComponent {
     const result = await this.loginUseCase.execute(params);
     console.log(result);
     if (result) {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/patients']);
     } else {
       this.showToast('Invalid credentials. Please try again.', 'error');
     }

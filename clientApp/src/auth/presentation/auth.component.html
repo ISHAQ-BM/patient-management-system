@@ -60,7 +60,7 @@
       
 
       
-      <button mat-raised-button class="submit" type="submit" [disabled]="!authForm.valid || isLoading" >
+      <button mat-raised-button class="submit" type="submit" [disabled]="!authForm.valid" >
         
         <mat-spinner *ngIf="isLoading" diameter="20" class="uploader-status" ></mat-spinner>
         <span *ngIf="!isLoading">Connecter</span>

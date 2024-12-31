@@ -1,0 +1,13 @@
+<mat-toolbar class="toolbar">
+  <div class="profile-container">
+    <mat-icon class="avatar" [style.background-image]="'url(https://example.com/avatar.jpg)'"></mat-icon>
+    <div class="user-details">
+      <span class="username">{{ username }}</span>
+      <span class="role">{{ role }}</span>
+    </div>
+  </div>
+</mat-toolbar>
+<div class="content">
+  <router-outlet></router-outlet>
+</div>
+

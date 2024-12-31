@@ -1,6 +1,7 @@
-<main class="main">
-  <!-- <app-auth></app-auth> -->
-  
-</main>
 
-<router-outlet />
+<app-layout *ngIf="authRepository.isAuthenticated()">
+  <router-outlet></router-outlet>
+</app-layout>
+
+<router-outlet *ngIf="!authRepository.isAuthenticated()"></router-outlet>
+
