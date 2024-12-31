@@ -6,6 +6,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SearchDPIUseCase } from "../domain/usecase/searchDPIByNSS.usecase";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 
 export interface PeriodicElement {
@@ -54,13 +55,61 @@ export class PatientsListComponent implements AfterViewInit{
 
    @ViewChild(MatPaginator)
     paginator!: MatPaginator;
+    private snackBar = inject(MatSnackBar); 
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
   searchControl = new FormControl('');
 
-  onSearch() {
-    this.searchDPIUseCase.execute(this.searchControl.value)
+  async onSearch() {
+  try {
+    const result = await this.searchDPIUseCase.execute(this.searchControl.value);
+    console.log(result);
+
+    if (result) {
+      const element = this.transformResultToElement(result);
+      this.dataSource.data = [element];
+    } else {
+      this.showToast('No results found.', 'error');
+    }
+  } catch (error: any) {
+    this.showToast(error.message || 'An error occurred while searching.', 'error');
   }
 }
+
+
+  private transformResultToElement(result: any): PeriodicElement {
+  return {
+    patientName: `${result.patient_info.nom} ${result.patient_info.prenom}`,
+    age: this.calculateAge(result.patient_info.date_naissance).toString(),
+    gender: result.gender || 'N/A', // Adjust according to your data
+    bloodGroup: result.bloodGroup || 'N/A', // Adjust according to your data
+    phoneNumber: result.patient_info.telephone,
+    emailID: result.patient_info.medecin_traitant.split(' - ')[0], // Extract email if structured like "email - specialization"
+  };
+}
+
+
+
+showToast(message: string, type: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+      panelClass: type === 'success' ? 'success-snackbar' : 'error-snackbar',
+    });
+  }
+
+
+  private calculateAge(dateOfBirth: string): number {
+  const birthDate = new Date(dateOfBirth);
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+}
+
+}
+

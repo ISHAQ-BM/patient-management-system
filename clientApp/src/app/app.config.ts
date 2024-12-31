@@ -13,6 +13,9 @@ import { CreateDPIUseCase } from '../administratif/domain/usecase/create-dpi.use
 import { PatientRepository } from '../patient/domain/repositories/patient.repository';
 import { PatientImplementationRepository } from '../patient/data/repositories/patient-implementation.repository';
 import { GetDPIUseCase } from '../patient/domain/usecase/getDpi.usecase';
+import { SearchDPIUseCase } from '../patients-list/domain/usecase/searchDPIByNSS.usecase';
+import { PatientsListRepository } from '../patients-list/domain/repositories/patients-list.repository';
+import { PatientsListImplementationRepository } from '../patients-list/data/repositories/patients-list-implementation.repository';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,6 +29,8 @@ export const appConfig: ApplicationConfig = {
     { provide: CreateDPIUseCase, useClass: CreateDPIUseCase }, 
     { provide: PatientRepository, useClass: PatientImplementationRepository }, 
     { provide: GetDPIUseCase, useClass: GetDPIUseCase }, 
+    { provide: PatientsListRepository, useClass: PatientsListImplementationRepository }, 
+    { provide: SearchDPIUseCase, useClass: SearchDPIUseCase },
     provideHttpClient(withFetch()), provideAnimationsAsync(), provideAnimationsAsync(),
   
   ]
