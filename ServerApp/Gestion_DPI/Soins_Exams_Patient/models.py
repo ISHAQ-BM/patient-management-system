@@ -28,7 +28,7 @@ class LaborantinRadiologue(models.Model):
 
     def __str__(self):
         return f"{self.role}: {self.user.get_full_name()}"
-    
+
 class Soin(models.Model):
     
     dossier_patient = models.ForeignKey('Med_Patient.DossierPatient', on_delete=models.CASCADE, related_name="soins")
@@ -37,6 +37,7 @@ class Soin(models.Model):
     description = models.TextField(null=True, blank=True)
     observation = models.TextField(null=True, blank=True)
     def __str__(self):
+
         return f"Soin de {self.dossier_patient} - {self.date_soin}"    
 
 def validate_medical_image(value):
@@ -101,3 +102,4 @@ class ResultatExamen(models.Model):
         verbose_name="Image médicale",
         help_text="Image médicale au format JPG, PNG ou DICOM"
     )
+

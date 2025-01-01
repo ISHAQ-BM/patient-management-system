@@ -30,6 +30,8 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from authentification.views import AuthenticationViewSet
 from Med_Patient.views import PersonnelAdministratifViewSet
+from Med_Patient.views import RechercherDossierPatientAPIView,ConsultationParIndexAPIView
+from Soins_Exams_Patient.views import RechercherDossierPatientInfirmierAPIView,SoinParIndexAPIView
 from Med_Patient.views import PatientDossierViewSet
 from authentification.views import RegisterView
 from Med_Patient.views import ConsultationViewSet, MedecinDossiersViewSet
@@ -37,6 +39,7 @@ from Soins_Exams_Patient.views import PharmacienViewSet
 from Soins_Exams_Patient.views import ResultatExamenViewSet
 from django.conf import settings
 from django.conf.urls.static import static
+
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -74,7 +77,9 @@ urlpatterns = [
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

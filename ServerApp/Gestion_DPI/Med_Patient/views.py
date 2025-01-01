@@ -2,6 +2,10 @@ from django.forms import ValidationError
 from rest_framework import viewsets, mixins
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.views import APIView
+
+from .models import DossierPatient, Patient,Medecin
 from rest_framework import status
 from .serializers import ConsultationCreateSerializer, DossierPatientMedecinSerializer, PatientDossierSerializer, UserSerializer, PatientSerializer, DossierPatientSerializer
 from .permissions import IsPersonnelAdministratif, IsPatientUser, IsMedecinUser
@@ -201,6 +205,7 @@ class PersonnelAdministratifViewSet(viewsets.ViewSet):
                 {'error': f'Une erreur est survenue: {str(e)}'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
         
 
 class PatientDossierViewSet(viewsets.ReadOnlyModelViewSet):
@@ -252,10 +257,12 @@ class PatientDossierViewSet(viewsets.ReadOnlyModelViewSet):
                 description="Token JWT Bearer. Ex: Bearer {token}",
                 type=openapi.TYPE_STRING,
                 required=True
+
             )
         ],
         responses={
             200: openapi.Response(
+
                 description="Dossier détaillé récupéré avec succès",
                 schema=openapi.Schema(
                     type=openapi.TYPE_OBJECT,
@@ -322,11 +329,13 @@ class PatientDossierViewSet(viewsets.ReadOnlyModelViewSet):
                                         }
                                     )
                                 )
+
                             }
                         )
                     }
                 )
             ),
+
             401: "Non authentifié",
             403: "Pas les permissions requises (rôle patient requis)",
             404: "Patient non trouvé"
@@ -625,6 +634,7 @@ Grippe saisonnière de type A
                 ])
 
         return "\n".join(s for s in resume_sections if s)           
+
     
 class MedecinDossiersViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     permission_classes = [IsAuthenticated, IsMedecinUser]
@@ -634,3 +644,4 @@ class MedecinDossiersViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         return DossierPatient.objects.filter(
             NSS__medecin_traitant__user=self.request.user
         )
+

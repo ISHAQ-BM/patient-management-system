@@ -1,0 +1,94 @@
+<div>
+
+    
+    <div class="table-header">
+
+      <div class="search">
+        <div class="input">
+  <mat-form-field appearance="outline">
+    <input matInput [formControl]="searchControl" placeholder="Search">
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+  </div>
+
+  
+    <button class="button" (click)="onSearch(null)">
+      <mat-icon>search</mat-icon>
+    </button>
+    <button class="qr-search-button" (click)="fileInput.click()">
+      QR Srearch
+      <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
+<path id="Vector" d="M8.50896 3.04H3.65104C3.49987 3.04 3.35488 3.10005 3.24799 3.20695C3.14109 3.31384 3.08104 3.45883 3.08104 3.61V8.55C3.08104 8.70117 3.14109 8.84615 3.24799 8.95305C3.35488 9.05995 3.49987 9.12 3.65104 9.12H8.50896C8.66013 9.12 8.80511 9.05995 8.91201 8.95305C9.01891 8.84615 9.07896 8.70117 9.07896 8.55V3.61C9.07896 3.45883 9.01891 3.31384 8.91201 3.20695C8.80511 3.10005 8.66013 3.04 8.50896 3.04ZM7.93896 7.98H4.22104V4.18H7.93896V7.98ZM6.84 5.32H5.32V6.84H6.84V5.32ZM0.76 7.6C0.961565 7.6 1.15487 7.51993 1.2974 7.3774C1.43993 7.23487 1.52 7.04156 1.52 6.84V2.28C1.5202 2.0785 1.60034 1.88531 1.74282 1.74282C1.88531 1.60034 2.0785 1.5202 2.28 1.52H6.84C7.04156 1.52 7.23487 1.43993 7.3774 1.2974C7.51993 1.15487 7.6 0.961565 7.6 0.76C7.6 0.558435 7.51993 0.365126 7.3774 0.222599C7.23487 0.0800712 7.04156 0 6.84 0H2.28C1.67549 0.000603603 1.09592 0.241011 0.668463 0.668463C0.241011 1.09592 0.000603603 1.67549 0 2.28V6.84C0 7.04156 0.0800712 7.23487 0.222599 7.3774C0.365126 7.51993 0.558435 7.6 0.76 7.6ZM8.50896 9.88H3.65104C3.49987 9.88 3.35488 9.94005 3.24799 10.0469C3.14109 10.1538 3.08104 10.2988 3.08104 10.45V15.39C3.08104 15.5412 3.14109 15.6862 3.24799 15.7931C3.35488 15.8999 3.49987 15.96 3.65104 15.96H8.50896C8.66013 15.96 8.80511 15.8999 8.91201 15.7931C9.01891 15.6862 9.07896 15.5412 9.07896 15.39V10.45C9.07896 10.2988 9.01891 10.1538 8.91201 10.0469C8.80511 9.94005 8.66013 9.88 8.50896 9.88ZM7.93896 14.82H4.22104V11.02H7.93896V14.82ZM6.84 12.16H5.32V13.68H6.84V12.16ZM6.84 17.48H2.28C2.0785 17.4798 1.88531 17.3997 1.74282 17.2572C1.60034 17.1147 1.5202 16.9215 1.52 16.72V12.16C1.52 11.9584 1.43993 11.7651 1.2974 11.6226C1.15487 11.4801 0.961565 11.4 0.76 11.4C0.558435 11.4 0.365126 11.4801 0.222599 11.6226C0.0800712 11.7651 0 11.9584 0 12.16V16.72C0.000603603 17.3245 0.241011 17.9041 0.668463 18.3315C1.09592 18.759 1.67549 18.9994 2.28 19H6.84C7.04156 19 7.23487 18.9199 7.3774 18.7774C7.51993 18.6349 7.6 18.4416 7.6 18.24C7.6 18.0384 7.51993 17.8451 7.3774 17.7026C7.23487 17.5601 7.04156 17.48 6.84 17.48ZM18.24 11.4C18.0384 11.4 17.8451 11.4801 17.7026 11.6226C17.5601 11.7651 17.48 11.9584 17.48 12.16V16.72C17.4798 16.9215 17.3997 17.1147 17.2572 17.2572C17.1147 17.3997 16.9215 17.4798 16.72 17.48H12.16C11.9584 17.48 11.7651 17.5601 11.6226 17.7026C11.4801 17.8451 11.4 18.0384 11.4 18.24C11.4 18.4416 11.4801 18.6349 11.6226 18.7774C11.7651 18.9199 11.9584 19 12.16 19H16.72C17.3245 18.9994 17.9041 18.759 18.3315 18.3315C18.759 17.9041 18.9994 17.3245 19 16.72V12.16C19 11.9584 18.9199 11.7651 18.7774 11.6226C18.6349 11.4801 18.4416 11.4 18.24 11.4ZM11.78 14.06H10.26V15.58H11.78V14.06ZM10.26 11.7754H11.78V10.2554H10.26V11.7754ZM16.72 0H12.16C11.9584 0 11.7651 0.0800712 11.6226 0.222599C11.4801 0.365126 11.4 0.558435 11.4 0.76C11.4 0.961565 11.4801 1.15487 11.6226 1.2974C11.7651 1.43993 11.9584 1.52 12.16 1.52H16.72C16.9215 1.5202 17.1147 1.60034 17.2572 1.74282C17.3997 1.88531 17.4798 2.0785 17.48 2.28V6.84C17.48 7.04156 17.5601 7.23487 17.7026 7.3774C17.8451 7.51993 18.0384 7.6 18.24 7.6C18.4416 7.6 18.6349 7.51993 18.7774 7.3774C18.9199 7.23487 19 7.04156 19 6.84V2.28C18.9994 1.67549 18.759 1.09592 18.3315 0.668463C17.9041 0.241011 17.3245 0.000603603 16.72 0ZM12.16 6.84H13.68V5.32H12.16V6.84ZM13.68 13.68V12.16H12.16V13.68H13.68ZM15.349 9.12C15.5001 9.12 15.6451 9.05995 15.752 8.95305C15.8589 8.84615 15.919 8.70117 15.919 8.55V3.61C15.919 3.45883 15.8589 3.31384 15.752 3.20695C15.6451 3.10005 15.5001 3.04 15.349 3.04H10.491C10.3399 3.04 10.1949 3.10005 10.088 3.20695C9.98109 3.31384 9.92104 3.45883 9.92104 3.61V8.55C9.92104 8.70117 9.98109 8.84615 10.088 8.95305C10.1949 9.05995 10.3399 9.12 10.491 9.12H15.349ZM11.061 4.18H14.779V7.98H11.061V4.18ZM15.58 10.2554H14.06V11.7754H15.58V10.2554ZM14.06 15.58H15.58V14.06H14.06V15.58Z" fill="white"/>
+</svg>
+ <input #fileInput type="file" accept="image/*" (change)="onFileUpload($event)" style="display: none" />
+
+    </button>
+    </div>
+    <button class="qr-search-button">
+      <mat-icon>add</mat-icon>
+      New DPI
+      
+    </button>
+ 
+</div>
+
+
+
+
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+
+  <ng-container matColumnDef="patientName">
+    <th mat-header-cell *matHeaderCellDef> Patient Name </th>
+    <td mat-cell *matCellDef="let element" >
+      <div class="user-info">
+           <mat-icon class="avatar" [style.background-image]="'url(https://example.com/avatar.jpg)'"></mat-icon>
+    
+        <p>{{element.patientName}}</p>
+      </div>
+       
+        
+     </td>
+  </ng-container>
+
+  
+  <ng-container matColumnDef="age">
+    <th mat-header-cell *matHeaderCellDef> Age </th>
+    <td mat-cell *matCellDef="let element"> {{element.age}} </td>
+  </ng-container>
+
+  
+  <ng-container matColumnDef="gender">
+    <th mat-header-cell *matHeaderCellDef> Gender </th>
+    <td mat-cell *matCellDef="let element"> {{element.gender}} </td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="bloodGroup">
+    <th mat-header-cell *matHeaderCellDef> Blood Group </th>
+    <td mat-cell *matCellDef="let element"> {{element.bloodGroup}} </td>
+  </ng-container>
+
+   <ng-container matColumnDef="phoneNumber">
+    <th mat-header-cell *matHeaderCellDef> Phone Number </th>
+    <td mat-cell *matCellDef="let element"> {{element.phoneNumber}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="emailID">
+    <th mat-header-cell *matHeaderCellDef> Email ID </th>
+    <td mat-cell *matCellDef="let element"> {{element.emailID}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClicked(row)"></tr>
+</table>
+<mat-paginator [pageSizeOptions]="[5]"
+                 aria-label="Select page of periodic elements">
+</mat-paginator>
+
+
+  
+
+</div>
+

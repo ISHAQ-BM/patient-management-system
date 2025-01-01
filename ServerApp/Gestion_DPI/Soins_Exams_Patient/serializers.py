@@ -1,3 +1,4 @@
+
 from rest_framework import serializers
 from Med_Patient.models import DossierPatient, Examen, Ordonnance, MedicamentOrdonnance, Medicament, Patient
 from Soins_Exams_Patient.models import ResultatExamen
@@ -90,3 +91,4 @@ class ResultatExamenSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Un radiologue ne peut traiter que des examens radiologiques")
 
         return value        
+

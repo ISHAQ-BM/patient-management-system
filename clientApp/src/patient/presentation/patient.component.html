@@ -1,0 +1,68 @@
+<div *ngIf="dpiData" class="card-container">
+  <mat-card class="user-info-card">
+    
+    <div class="profile-section">
+      <img class="profile-image" src="assets/profile.jpg" alt="Profile Image" />
+      <div class="profile-name">{{ dpiData.nom }} {{ dpiData.prenom }}</div>
+    </div>
+
+    
+    <div class="info-item">
+      <mat-icon class="icon">account_circle</mat-icon>
+      <span class="label">SSN:</span>
+      <span class="value">{{ dpiData.numero_securite_sociale }}</span>
+    </div>
+
+    
+    <div class="info-item">
+      <mat-icon class="icon">calendar_today</mat-icon>
+      <span class="label">Birth Date:</span>
+      <span class="value">{{ dpiData.date_naissance }}</span>
+    </div>
+
+    
+    <div class="info-item">
+      <mat-icon class="icon">phone</mat-icon>
+      <span class="label">Phone Number:</span>
+      <span class="value">{{ dpiData.telephone }}</span>
+    </div>
+
+    
+    <div class="info-item">
+      <mat-icon class="icon">home</mat-icon>
+      <span class="label">Address:</span>
+      <span class="value">{{ dpiData.adresse }}</span>
+    </div>
+
+    
+    <div class="info-item">
+      <mat-icon class="icon">email</mat-icon>
+      <span class="label">Email:</span>
+      <span class="value">{{ dpiData.mutuelle }}</span>
+    </div>
+
+    
+    <div class="info-item">
+      <mat-icon class="icon">contacts</mat-icon>
+      <span class="label">People to Contact:</span>
+      <div class="contact-numbers">
+        <div>{{ dpiData.personne_contact_nom }}</div>
+        <div>{{ dpiData.personne_contact_telephone }}</div>
+      </div>
+    </div>
+
+    
+    <div class="info-item">
+      <mat-icon class="icon">history_edu</mat-icon>
+      <span class="label">Antecedent:</span>
+      <p class="value">{{ dpiData.dossier.antecedents }}</p>
+    </div>
+
+   
+    <div class="info-item">
+      <mat-icon class="icon">update</mat-icon>
+      <span class="label">Last Update:</span>
+      <span class="value">{{ dpiData.dossier.date_derniere_mise_a_jour }}</span>
+    </div>
+  </mat-card>
+</div>

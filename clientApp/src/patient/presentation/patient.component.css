@@ -1,0 +1,78 @@
+/* Container to center the card in the middle of the page */
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.user-info-card {
+  width: 80%;
+  max-width: 600px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.profile-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.profile-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #337E92;
+}
+
+.profile-name {
+  color: #337E92;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 0;
+}
+
+.icon {
+  background: #337E92;
+  color: white;
+  border-radius: 50%;
+  padding: 6px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.label {
+  color: #337E92;
+  font-weight: 500;
+}
+
+.value {
+  color: #4D4D4D;
+}
+
+.contact-numbers {
+  color: #595959;
+  margin-left: auto;
+  font-size: 12px;
+}
+
+.value p {
+  color: #595959;
+  font-size: 12px;
+  margin: 0;
+}

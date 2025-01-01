@@ -1,0 +1,20 @@
+<mat-toolbar class="toolbar">
+  <div class="profile-container">
+    <mat-icon [matMenuTriggerFor]="menu" class="avatar" [style.background-image]="'url(https://example.com/avatar.jpg)'"></mat-icon>
+    <mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="logout()">
+    <mat-icon>logout</mat-icon>
+    <span>Logout</span>
+  </button>
+  
+  
+</mat-menu>
+    <div class="user-details">
+      <span class="username">{{ username }}</span>
+      <span class="role">{{ role }}</span>
+    </div>
+  </div>
+  
+  <router-outlet></router-outlet>
+</div>
+

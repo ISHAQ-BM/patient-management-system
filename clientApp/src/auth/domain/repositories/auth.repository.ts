@@ -6,7 +6,7 @@ import { LoginResponse } from '../../data/entities/login-response.entity';
 })
 export abstract class AuthRepository {
     abstract login(params: {username:string,password:string}): Promise<LoginResponse>;
-    abstract logout(params: {}):Promise<string>;
+    abstract logout():Promise<{}>;
     abstract isAuthenticated():boolean;
 
 }

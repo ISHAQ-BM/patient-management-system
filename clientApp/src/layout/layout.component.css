@@ -1,0 +1,78 @@
+
+.toolbar {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  background-color: transparent;  
+}
+
+:host {
+  display: block;
+  background-color: #F1F8FF; 
+  height: 100vh;  
+}
+
+.profile-container {
+  display: flex;
+  align-items: center;
+}
+
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  background-color: #337E92;  
+  background-size: cover;
+  border-radius: 50%;
+  margin-right: 10px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+
+}
+
+
+
+.avatar:hover {
+  cursor: pointer; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  transform: scale(1.05); 
+}
+.user-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+
+.username {
+  color: #374858;
+font-size: 12px;
+font-family: Poppins;
+font-weight: 500;
+margin-bottom: -5px;
+word-wrap: break-word
+}
+
+.role {
+color: #808080;
+ font-size: 11px;
+ font-family: Poppins;
+ font-weight: 400;
+ word-wrap: break-word;
+ 
+margin-top: -5px;
+
+}
+
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.content {
+  margin: 40px;
+  background-color: white;
+}
+
+
+

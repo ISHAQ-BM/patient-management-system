@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'Med_Patient',
     'Soins_Exams_Patient',
     'django_extensions'
+
 ]
 
 CORS_ALLOWED_ORIGINS = [
