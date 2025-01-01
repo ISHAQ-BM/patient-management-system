@@ -1,14 +1,14 @@
 from django.forms import ValidationError
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import status
-from .serializers import ConsultationCreateSerializer, PatientDossierSerializer, UserSerializer, PatientSerializer, DossierPatientSerializer
-from .permissions import IsPersonnelAdministratif, IsPatientUser
+from .serializers import ConsultationCreateSerializer, DossierPatientMedecinSerializer, PatientDossierSerializer, UserSerializer, PatientSerializer, DossierPatientSerializer
+from .permissions import IsPersonnelAdministratif, IsPatientUser, IsMedecinUser
 from django.db import transaction
 from datetime import date
 from rest_framework.permissions import IsAuthenticated
-from .models import Consultation, DossierPatient, Patient, Examen, Ordonnance, Medicament, MedicamentOrdonnance
+from .models import Consultation, DossierPatient, Medecin, Patient, Examen, Ordonnance, Medicament, MedicamentOrdonnance
 from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
@@ -625,3 +625,12 @@ Grippe saisonnière de type A
                 ])
 
         return "\n".join(s for s in resume_sections if s)           
+    
+class MedecinDossiersViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    permission_classes = [IsAuthenticated, IsMedecinUser]
+    serializer_class = DossierPatientMedecinSerializer
+    
+    def get_queryset(self):
+        return DossierPatient.objects.filter(
+            NSS__medecin_traitant__user=self.request.user
+        )

@@ -32,7 +32,7 @@ from authentification.views import AuthenticationViewSet
 from Med_Patient.views import PersonnelAdministratifViewSet
 from Med_Patient.views import PatientDossierViewSet
 from authentification.views import RegisterView
-from Med_Patient.views import ConsultationViewSet
+from Med_Patient.views import ConsultationViewSet, MedecinDossiersViewSet
 from Soins_Exams_Patient.views import PharmacienViewSet
 from Soins_Exams_Patient.views import ResultatExamenViewSet
 from django.conf import settings
@@ -57,6 +57,7 @@ router.register(r'auth', AuthenticationViewSet, basename='authentification')
 router.register(r'personnel', PersonnelAdministratifViewSet, basename='personnel')
 router.register(r'mon-dossier', PatientDossierViewSet, basename='patient-dossier')
 router.register(r'Consultation', ConsultationViewSet, basename='consultation')
+router.register(r'mes-patients', MedecinDossiersViewSet, basename='medecin-patients')
 routerspgh = DefaultRouter()
 routerspgh.register(r'pharmacien', PharmacienViewSet, basename='pharmacien')
 router.register(r'resultats', ResultatExamenViewSet, basename='resultat')
