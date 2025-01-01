@@ -1,12 +1,14 @@
 import { AfterViewInit, Component, inject, Sanitizer, ViewChild } from "@angular/core";
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import { MatFormField, MatFormFieldModule } from "@angular/material/form-field";
+import {  MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatIconModule } from "@angular/material/icon";
 import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SearchDPIUseCase } from "../domain/usecase/searchDPIByNSS.usecase";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import jsQR from 'jsqr';
+
 
 
 export interface PeriodicElement {
@@ -47,6 +49,8 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class PatientsListComponent implements AfterViewInit{
 
 
+  decodedString: string | null = null;
+
   
         private searchDPIUseCase = inject(SearchDPIUseCase); 
 
@@ -62,9 +66,16 @@ export class PatientsListComponent implements AfterViewInit{
   }
   searchControl = new FormControl('');
 
-  async onSearch() {
+  
+   onRowClicked(row: any) {
+    console.log('Row clicked: ', row);
+    // Add navigation or other actions here
+  }
+
+  async onSearch(query:string | null) {
   try {
-    const result = await this.searchDPIUseCase.execute(this.searchControl.value);
+    const searchQuery = query || this.searchControl.value;
+    const result = await this.searchDPIUseCase.execute(searchQuery);
     console.log(result);
 
     if (result) {
@@ -75,6 +86,44 @@ export class PatientsListComponent implements AfterViewInit{
     }
   } catch (error: any) {
     this.showToast(error.message || 'An error occurred while searching.', 'error');
+  }
+}
+
+
+onFileUpload(event: any): void {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        if (context) {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          context.drawImage(img, 0, 0, img.width, img.height);
+
+         
+          try {
+            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+            const code = jsQR(imageData.data, canvas.width, canvas.height);
+
+            if (code) {
+              this.decodedString = code.data; 
+              this.onSearch(this.decodedString) 
+            } else {
+              this.decodedString = 'No QR code found';
+            }
+          } catch (error) {
+            console.error('Error while processing the image data:', error);
+            this.decodedString = 'Error processing QR code';
+          }
+        }
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file); 
   }
 }
 
@@ -112,4 +161,5 @@ showToast(message: string, type: string): void {
 }
 
 }
+
 

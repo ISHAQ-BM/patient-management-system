@@ -27,7 +27,9 @@
     "@coreui/icons-angular": "~5.3.5",
     "@material/web": "^2.2.0",
     "@popperjs/core": "~2.11.8",
+    "angularx-qrcode": "^19.0.0",
     "express": "^4.18.2",
+    "jsqr": "^1.4.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
