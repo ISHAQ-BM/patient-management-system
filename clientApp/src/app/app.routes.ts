@@ -3,13 +3,13 @@ import { AuthComponent } from '../auth/presentation/auth.component';
 import { authGuard } from './auth.guard';
 import { PatientsListComponent } from '../patients-list/presentation/patients-list.components';
 import { PatientComponent } from '../patient/presentation/patient.component';
-
+import { ConsultationComponent } from '../consultation/consultation.component';
 export const routes: Routes = [
     { path: 'login', component: AuthComponent },
     {
     path: 'patients',
     canActivate: [authGuard],
-    component: PatientsListComponent,
+    component: ConsultationComponent,
     children: [
       { path: ':nss',canActivate: [authGuard], component: PatientComponent }, 
     ],

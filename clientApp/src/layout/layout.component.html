@@ -1,13 +1,14 @@
-<mat-toolbar class="toolbar">
-  <div class="profile-container">
-    <mat-icon class="avatar" [style.background-image]="'url(https://example.com/avatar.jpg)'"></mat-icon>
-    <div class="user-details">
-      <span class="username">{{ username }}</span>
-      <span class="role">{{ role }}</span>
-    </div>
+<div class="p-8 font-poppins bg-[#F1F8FF]">
+  <div class="flex justify-end pb-16">
+      <div class="flex justify-center items-center gap-1">
+        <div class="w-12 h-12 bg-[#337E92] rounded-full"></div>
+        <div>
+          <div class="text-[#374858] font-medium text-[13px]">{{username}}</div>
+          <div class="text-[#808080] text-[12px]">{{role}}</div>
+        </div>
+      </div>
   </div>
-</mat-toolbar>
-<div class="content">
+  
   <router-outlet></router-outlet>
 </div>
 

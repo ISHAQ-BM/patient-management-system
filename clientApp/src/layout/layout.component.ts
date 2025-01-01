@@ -12,6 +12,6 @@ import { RouterModule } from '@angular/router';
   imports: [MatIconModule,MatToolbarModule,RouterModule,CommonModule],
 })
 export class LayoutComponent {
-  username = 'ishaq ';
+  username = 'Mohamed Hidjab';
   role='doctor'
 }
