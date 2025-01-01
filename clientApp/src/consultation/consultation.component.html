@@ -1,0 +1,80 @@
+<div class="pb-7 ">
+    <div class="w-full font-poppins bg-white rounded-3xl">
+        <div class="flex flex-col  items-center gap-4 pt-0 px-6 -translate-y-[45px] lg:translate-y-[0px] lg:pt-7 lg:flex-row pb-5">
+            <div class="w-[90px] h-[90px] lg:w-[60px] lg:h-[60px] rounded-full bg-[#337E92]"></div>
+            <p class="text-[#525252] font-bold text-[20px]">Bachta Yasser</p>
+        </div> 
+        <div class="flex flex-col  max-h-[600px] overflow-y-scroll lg:max-h-none lg:overflow-hidden lg:m px-5 py-4 lg:flex-row lg:gap-5 lg:justify-between lg:px-10">
+            <div class="flex flex-col gap-5 w-full lg:max-w-[400px] items-stretch">
+                <input-component label="Diagnosis" placeholder="exemple : helloWorld"></input-component>
+                <textarea-component label="Observation"></textarea-component>
+                <textarea-component label="Antecedent"></textarea-component>
+
+            </div>
+            <div class="flex flex-col gap-5 w-full max-w-[850px] mt-[1.25rem] lg:mt-0">
+                <div class="w-full flex flex-col gap-5">
+                    <div class="flex flex-col">
+                        <div class="flex gap-5 items-center">
+                            <app-button ButtonName ='Laboratory report'></app-button>
+                            <svg width="21" height="28" viewBox="0 0 21 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0 3.5C0 1.56953 1.56953 0 3.5 0H12.25V7C12.25 7.96797 13.032 8.75 14 8.75H21V24.5C21 26.4305 19.4305 28 17.5 28H3.5C1.56953 28 0 26.4305 0 24.5V3.5ZM21 7H14V0L21 7Z" fill="#374957"/>
+                            </svg>
+                                
+                        </div>
+                        <input-component></input-component>
+                    </div>
+                    <div class="flex flex-col">
+                        <div class="flex gap-5 items-center">
+                            <app-button ButtonName ='Radiology report'></app-button>
+                            <svg width="21" height="28" viewBox="0 0 21 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0 3.5C0 1.56953 1.56953 0 3.5 0H12.25V7C12.25 7.96797 13.032 8.75 14 8.75H21V24.5C21 26.4305 19.4305 28 17.5 28H3.5C1.56953 28 0 26.4305 0 24.5V3.5ZM21 7H14V0L21 7Z" fill="#374957"/>
+                            </svg>
+                                
+                        </div>
+                        <input-component></input-component>
+                    </div>
+
+                </div>
+                <p class="text-[#337E92] font-medium text-[16px] ml-3">Prescription</p>
+                <div class="ml-5 flex flex-col lg:flex-wrap items-start gap-5">
+                    <div class="flex flex-row items-center gap-5 flex-wrap">
+                        <p class="text-[#838182] font-medium ">Duration</p>
+                        <div class="flex items-center justify-between p-2 min-w-[150px] max-w-[170px] h-12 border-[1px] border-[#B4B4B4] rounded-[19px] pl-4 pr-4 focus:outline-none">
+                            <button (click)="minus()" class=" text-[#B4B4B4] font-semibold text-[30px] rounded-full w-8 h-8 flex items-center justify-center">-</button>
+                            <div class="text-[#595959]">{{num}}</div>
+                            <button (click)="plus()"  class=" text-[#B4B4B4] font-semibold text-[30px] rounded-full w-8 h-8 flex items-center justify-center">+</button>
+                        </div>
+                        <div>
+                            <select class="w-full min-w-[150px] max-w-[200px] h-12 border-[1px] border-[#B4B4B4] rounded-[19px] px-5 focus:outline-none ">
+                                <option value="volvo">days</option>
+                                <option value="saab">mounth</option>
+                        
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-5  items-start md:flex-row md:flex-wrap ">
+                        <div class="flex gap-5 items-center">
+                            <p class="text-[#838182] font-medium ">Dose</p>
+                            <input type="text" class="w-full  min-w-[150px] max-w-[170px] h-12 border-[1px] border-[#B4B4B4] rounded-[19px] pl-4 pr-4 focus:outline-none placeholder:text-[12px] placeholder:font-[100]" placeholder="exemple : 1g (2pills)" />
+                        </div>
+                        <div class="flex gap-5 items-center">
+                            <p class="text-[#838182] font-medium ">Medecine</p>
+                            <input type="text" class="w-full  min-w-[150px] max-w-[170px] h-12 border-[1px] border-[#B4B4B4] rounded-[19px] pl-4 pr-4 focus:outline-none placeholder:text-[12px] placeholder:font-[100]" placeholder="exemple : saro5" />
+                        </div>
+                        <div class="flex gap-5 items-center">
+                            <p class="text-[#838182] font-medium ">Frequency</p>
+                            <input type="text" class="w-full  min-w-[150px] max-w-[170px] h-12 border-[1px] border-[#B4B4B4] rounded-[19px] pl-4 pr-4 focus:outline-none placeholder:text-[12px] placeholder:font-[100]" placeholder="exemple : 3times/day" />
+                        </div>
+        
+                    </div>
+                </div>
+                <textarea-component label="Consultation Summary"></textarea-component>
+            </div>
+        
+            
+        </div>
+        <div class="w-full flex justify-end p-7">
+            <button  class="rounded-3xl font-poppins px-[18px] py-[10px] text-white bg-[#838282] cursor-pointer">Submit</button>
+        </div>
+    </div>
+</div>
