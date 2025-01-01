@@ -173,3 +173,12 @@ class ConsultationCreateSerializer(serializers.ModelSerializer):
                 "Le résumé de la consultation est obligatoire"
             )
         return data
+    
+class DossierPatientMedecinSerializer(serializers.ModelSerializer):
+    nss = serializers.CharField(source='NSS.numero_securite_sociale')
+    email = serializers.EmailField(source='NSS.user.email')
+    telephone = serializers.CharField(source='NSS.telephone')
+
+    class Meta:
+        model = DossierPatient
+        fields = ['id', 'nss', 'email', 'telephone']    
