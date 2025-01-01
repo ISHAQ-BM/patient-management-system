@@ -1,143 +1,193 @@
-from django.shortcuts import render
-from rest_framework.views import APIView
+
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import status
-from Med_Patient.models import DossierPatient, Patient
-from Med_Patient.serializers import DossierPatientSerializer
-from authentification.models import User
-from .serializers import SoinSerializer
-from rest_framework.permissions import IsAuthenticated
+
+from Soins_Exams_Patient.models import ResultatExamen
+from .serializers import ExamenSerializer, OrdonnancePharmacienSerializer, ResultatExamenSerializer
+from .permissions import IsLaborantinRadiologueUser, IsPharmacientUser
+from django.shortcuts import get_object_or_404
+from Med_Patient.models import Examen, Ordonnance
+from rest_framework.parsers import MultiPartParser, FormParser
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
-class RechercherDossierPatientInfirmierAPIView(APIView):
-    """
-    API permettant à un infirmier authentifié de rechercher un dossier patient en utilisant son NSS.
-    """
-    permission_classes = [IsAuthenticated]  # Vérifie que l'utilisateur est authentifié
-
+class PharmacienViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated, IsPharmacientUser]
+    serializer_class = OrdonnancePharmacienSerializer
+    
     @swagger_auto_schema(
-        operation_description="Recherche un dossier patient via son numéro de sécurité sociale (NSS).",
+        operation_description="Valide ou dévalide une ordonnance spécifique",
         manual_parameters=[
             openapi.Parameter(
-                'nss',
-                openapi.IN_QUERY,
-                description="Numéro de sécurité sociale du patient à rechercher.",
-                type=openapi.TYPE_STRING,
-                required=True,
+                'pk',
+                openapi.IN_PATH,
+                description="ID de l'ordonnance",
+                type=openapi.TYPE_INTEGER,
+                required=True
             )
         ],
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=['action'],
+            properties={
+                'action': openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    enum=['valider', 'devalider'],
+                    description="Action à effectuer : 'valider' pour valider ou 'devalider' pour dévalider"
+                )
+            }
+        ),
         responses={
-            200: DossierPatientSerializer(),
-            400: "Le paramètre 'nss' est requis.",
-            403: "Seul un infirmier peut effectuer cette recherche.",
-            404: "Patient ou dossier non trouvé.",
+            200: openapi.Response(
+                description="Ordonnance validée ou dévalidée avec succès",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'message': openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description="Message de confirmation de l'action"
+                        ),
+                        'data': openapi.Schema(
+                            type=openapi.TYPE_OBJECT,
+                            additional_properties=openapi.Schema(
+                                type=openapi.TYPE_STRING
+                            )
+                        )
+                    }
+                )
+            ),
+            400: openapi.Response(
+                description="Action invalide. L'action doit être 'valider' ou 'devalider'."
+            ),
+            404: openapi.Response(
+                description="Ordonnance non trouvée"
+            ),
+            403: openapi.Response(
+                description="Accès non autorisé - L'utilisateur n'est pas un pharmacien"
+            )
         },
+        operation_id='valider_ordonnance'
     )
-    def get(self, request, *args, **kwargs):
+
+    @action(detail=True, methods=['post'])
+    def valider_ordonnance(self, request, pk=None):
         """
-        Recherche un dossier patient via son numéro de sécurité sociale (NSS).
-        Vérifie que l'utilisateur connecté est un infirmier.
+        Endpoint pour valider ou dévalider une ordonnance selon l'action demandée
         """
-        # Vérifie que l'utilisateur a le rôle d'infirmier
-        if not hasattr(request.user, 'infirmier'):
+        ordonnance = get_object_or_404(Ordonnance, pk=pk)
+        action = request.data.get('action')
+        
+        if action not in ['valider', 'devalider']:
             return Response(
-                {"detail": "Seul un infirmier peut effectuer cette recherche."},
+                {"error": "L'action doit être 'valider' ou 'devalider'"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+            
+        # Mise à jour selon l'action
+        ordonnance.est_validee = (action == 'valider')
+        ordonnance.save()
+        
+        serializer = self.serializer_class(ordonnance)
+        return Response({
+            'message': f"Ordonnance {'validée' if action == 'valider' else 'dévalidée'} avec succès",
+            'data': serializer.data
+        })
+
+    def list(self, request):
+        ordonnances = Ordonnance.objects.all().prefetch_related(
+            'medicament_ordonnances__medicament',
+            'consultation__dossier_patient__NSS'
+        )
+        
+        serializer = self.serializer_class(ordonnances, many=True)
+        return Response(serializer.data)
+    
+class ResultatExamenViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated, IsLaborantinRadiologueUser]
+    serializer_class = ResultatExamenSerializer
+    parser_classes = (MultiPartParser, FormParser)
+
+    def perform_create(self, serializer):
+        """
+        Associe automatiquement le laborantin/radiologue connecté au résultat
+        """
+        serializer.save(
+            laborantin_radiologue=self.request.user.laborantin_radiologue
+        )
+
+    def get_queryset(self):
+        user = self.request.user
+        try:
+            laborantin_radiologue = user.laborantin_radiologue
+            if laborantin_radiologue.role == 'Laborantin':
+                return ResultatExamen.objects.filter(
+                    examen__type_examen='biologique'
+                )
+            else:  # Radiologue
+                return ResultatExamen.objects.filter(
+                    examen__type_examen='radiologique'
+                )
+        except:
+            return ResultatExamen.objects.none()
+
+    @action(detail=False, methods=['get'])
+    def examens_a_traiter(self, request):
+        """Récupère les examens qui n'ont pas encore de résultats"""
+        user = request.user
+        try:
+            laborantin_radiologue = user.laborantin_radiologue
+            if laborantin_radiologue.role == 'Laborantin':
+                examens = Examen.objects.filter(
+                    type_examen='biologique',
+                    resultat__isnull=True
+                )
+            else:  # Radiologue
+                examens = Examen.objects.filter(
+                    type_examen='radiologique',
+                    resultat__isnull=True
+                )
+            
+            return Response({
+                'examens': ExamenSerializer(examens, many=True).data
+            })
+        except:
+            return Response(
+                {"error": "Utilisateur non autorisé"}, 
                 status=status.HTTP_403_FORBIDDEN
             )
 
-        # Récupère le NSS depuis les paramètres de la requête
-        nss = request.query_params.get('nss', None)
+    @action(detail=False, methods=['get'])
+    def resultats_patient(self, request):
+        """Récupère tous les résultats d'un patient par son NSS"""
+        nss = request.query_params.get('nss')
         if not nss:
-            return Response({"detail": "Le paramètre 'nss' est requis."}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Vérifie que le patient existe
-        try:
-            patient = Patient.objects.get(numero_securite_sociale=nss)
-        except Patient.DoesNotExist:
-            return Response({"detail": "Aucun patient trouvé avec ce numéro de sécurité sociale."}, status=status.HTTP_404_NOT_FOUND)
-
-        # Récupère le dossier patient associé
-        try:
-            dossier_patient = DossierPatient.objects.get(NSS=patient)
-        except DossierPatient.DoesNotExist:
-            return Response({"detail": "Aucun dossier trouvé pour ce patient."}, status=status.HTTP_404_NOT_FOUND)
-
-        # Sérialise le dossier patient
-        serializer = DossierPatientSerializer(dossier_patient)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-class SoinParIndexAPIView(APIView):
-    """
-    API permettant de récupérer un soin spécifique d'un dossier patient en fonction de l'ordre d'apparition du soin.
-    L'index commence à 1.
-    """
-    permission_classes = [IsAuthenticated]
-
-    @swagger_auto_schema(
-        operation_description="Récupère le soin spécifié par l'index dans la liste des soins associés au dossier patient.",
-        manual_parameters=[
-            openapi.Parameter(
-                'dossier_patient_id', openapi.IN_QUERY, description="ID du dossier patient", type=openapi.TYPE_INTEGER, required=True
-            ),
-            openapi.Parameter(
-                'index', openapi.IN_QUERY, description="Index du soin dans la liste des soins", type=openapi.TYPE_INTEGER, required=True
-            ),
-        ],
-        responses={
-            200: SoinSerializer(),
-            400: "Les paramètres 'dossier_patient_id' et 'index' sont requis.",
-            404: "Dossier patient ou soin non trouvé.",
-        },
-    )
-    
-
-    def get(self, request, *args, **kwargs):
-        """
-        Récupère le soin spécifié par l'index dans la liste des soins associés au dossier patient.
-        """
-        # Récupérer l'id du dossier patient et l'index du soin
-        dossier_patient_id = request.query_params.get('dossier_patient_id')
-        index = request.query_params.get('index')
-
-        # Vérifier que l'id du dossier patient et l'index sont fournis
-        if not dossier_patient_id or not index:
             return Response(
-                {"detail": "Les paramètres 'dossier_patient_id' et 'index' sont requis."},
+                {"error": "NSS requis"}, 
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # Vérifier que l'index est un entier
+        user = request.user
         try:
-            index = int(index)
-        except ValueError:
-            return Response(
-                {"detail": "L'index doit être un nombre entier."},
-                status=status.HTTP_400_BAD_REQUEST
+            laborantin_radiologue = user.laborantin_radiologue
+            resultats = ResultatExamen.objects.filter(
+                examen__consultation__dossier_patient__NSS__numero_securite_sociale=nss
             )
-
-        # Vérifier que le dossier patient existe
-        try:
-            dossier_patient = DossierPatient.objects.get(id=dossier_patient_id)
-        except DossierPatient.DoesNotExist:
+            
+            # Filtrer selon le rôle
+            if laborantin_radiologue.role == 'Laborantin':
+                resultats = resultats.filter(examen__type_examen='biologique')
+            else:  # Radiologue
+                resultats = resultats.filter(examen__type_examen='radiologique')
+            
             return Response(
-                {"detail": "Dossier patient non trouvé."},
-                status=status.HTTP_404_NOT_FOUND
+                self.get_serializer(resultats, many=True).data
             )
-
-        # Récupérer la liste des soins associés à ce dossier patient, ordonnée par la date du soin (ou selon un autre critère)
-        soins = dossier_patient.soins.all().order_by('date_soin')
-
-        # Vérifier que l'index est valide (dans les limites de la liste des soins)
-        if index < 1 or index > len(soins):
+        except:
             return Response(
-                {"detail": f"Il n'y a pas de soin à l'index {index} pour ce dossier patient."},
-                status=status.HTTP_404_NOT_FOUND
-            )
+                {"error": "Utilisateur non autorisé"}, 
+                status=status.HTTP_403_FORBIDDEN
+            )    
 
-        # Récupérer le soin à l'index spécifié
-        soin = soins[index - 1]  # L'index commence à 1, donc on soustrait 1 pour accéder à l'élément de la liste
 
-        # Sérialiser le soin et renvoyer la réponse
-        serializer = SoinSerializer(soin)
-        return Response(serializer.data, status=status.HTTP_200_OK)

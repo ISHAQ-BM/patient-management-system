@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from authentification.models import User
-from .models import Medecin, Patient, DossierPatient, Consultation, Ordonnance, Medicament, MedicamentOrdonnance, Examen
+from .models import Patient, DossierPatient, Consultation, Ordonnance, Medicament, MedicamentOrdonnance, Examen
 from django.contrib.auth.password_validation import validate_password
 
 class UserSerializer(serializers.ModelSerializer):
@@ -214,3 +214,12 @@ class ConsultationCreateSerializer(serializers.ModelSerializer):
                 "Le résumé de la consultation est obligatoire"
             )
         return data
+    
+class DossierPatientMedecinSerializer(serializers.ModelSerializer):
+    nss = serializers.CharField(source='NSS.numero_securite_sociale')
+    email = serializers.EmailField(source='NSS.user.email')
+    telephone = serializers.CharField(source='NSS.telephone')
+
+    class Meta:
+        model = DossierPatient
+        fields = ['id', 'nss', 'email', 'telephone']    

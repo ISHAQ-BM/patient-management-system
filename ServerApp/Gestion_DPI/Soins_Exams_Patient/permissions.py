@@ -1,0 +1,11 @@
+from rest_framework import permissions
+
+class IsPharmacientUser(permissions.BasePermission):
+
+    def has_permission(self, request, view):
+        return request.user and request.user.is_authenticated and request.user.role == 'PH'   
+    
+class IsLaborantinRadiologueUser(permissions.BasePermission):
+
+    def has_permission(self, request, view):
+        return request.user and request.user.is_authenticated and request.user.role == 'LR'       

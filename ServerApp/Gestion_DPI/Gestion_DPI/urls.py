@@ -34,7 +34,11 @@ from Med_Patient.views import RechercherDossierPatientAPIView,ConsultationParInd
 from Soins_Exams_Patient.views import RechercherDossierPatientInfirmierAPIView,SoinParIndexAPIView
 from Med_Patient.views import PatientDossierViewSet
 from authentification.views import RegisterView
-from Med_Patient.views import ConsultationViewSet
+from Med_Patient.views import ConsultationViewSet, MedecinDossiersViewSet
+from Soins_Exams_Patient.views import PharmacienViewSet
+from Soins_Exams_Patient.views import ResultatExamenViewSet
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 schema_view = get_schema_view(
@@ -56,11 +60,16 @@ router.register(r'auth', AuthenticationViewSet, basename='authentification')
 router.register(r'personnel', PersonnelAdministratifViewSet, basename='personnel')
 router.register(r'mon-dossier', PatientDossierViewSet, basename='patient-dossier')
 router.register(r'Consultation', ConsultationViewSet, basename='consultation')
+router.register(r'mes-patients', MedecinDossiersViewSet, basename='medecin-patients')
+routerspgh = DefaultRouter()
+routerspgh.register(r'pharmacien', PharmacienViewSet, basename='pharmacien')
+router.register(r'resultats', ResultatExamenViewSet, basename='resultat')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('api/', include(router.urls)),
+    path('api-spgh/', include(routerspgh.urls)),
     path('register/', RegisterView.as_view(), name='register'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # Obtenir les tokens
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # Rafraîchir le token
@@ -68,8 +77,9 @@ urlpatterns = [
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('api/Med_Patient/RechercheNSS/', RechercherDossierPatientAPIView.as_view(), name='rechercher-dossier-patient'),
-    path('api/Soins_Exams_Patient/RechercheNSS/', RechercherDossierPatientInfirmierAPIView.as_view(), name='rechercher_dossier_infirmier'),
-    path('api/Soins_Exams_Patient/soin-par-index/', SoinParIndexAPIView.as_view(), name="soin_par_index"),
-    path('api/Med_Patient/consultation-par-index/', ConsultationParIndexAPIView.as_view(), name="soin_par_index"),
-    ]
+
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

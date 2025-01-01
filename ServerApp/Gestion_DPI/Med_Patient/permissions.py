@@ -14,3 +14,8 @@ class IsPatientUser(permissions.BasePermission):
 
     def has_permission(self, request, view):
         return request.user and request.user.is_authenticated and request.user.role == 'P'   
+    
+class IsMedecinUser(permissions.BasePermission):
+
+    def has_permission(self, request, view):
+        return request.user and request.user.is_authenticated and request.user.role == 'M'    
