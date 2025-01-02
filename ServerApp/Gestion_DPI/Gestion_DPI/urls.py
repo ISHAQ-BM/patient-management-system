@@ -30,8 +30,6 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from authentification.views import AuthenticationViewSet
 from Med_Patient.views import PersonnelAdministratifViewSet
-from Med_Patient.views import RechercherDossierPatientAPIView,ConsultationParIndexAPIView
-from Soins_Exams_Patient.views import RechercherDossierPatientInfirmierAPIView,SoinParIndexAPIView
 from Med_Patient.views import PatientDossierViewSet
 from authentification.views import RegisterView
 from Med_Patient.views import ConsultationViewSet, MedecinDossiersViewSet
@@ -82,4 +80,3 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

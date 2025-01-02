@@ -644,4 +644,3 @@ class MedecinDossiersViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         return DossierPatient.objects.filter(
             NSS__medecin_traitant__user=self.request.user
         )
-
