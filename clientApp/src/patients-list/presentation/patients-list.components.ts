@@ -9,6 +9,8 @@ import { SearchDPIUseCase } from "../domain/usecase/searchDPIByNSS.usecase";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import jsQR from 'jsqr';
 import {  GetPatientsListUseCase } from "../domain/usecase/getPatientList.usecase";
+import { Router } from "@angular/router";
+import { CommonModule } from "@angular/common";
 
 
 
@@ -41,7 +43,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   selector: 'patients-list',
   templateUrl: './patients-list.component.html',
   styleUrl: './patients-list.component.css',
-  imports:[ReactiveFormsModule,MatTableModule,MatFormFieldModule, MatInputModule, MatIconModule,MatPaginatorModule,FormsModule]
+  imports:[ReactiveFormsModule,MatTableModule,MatFormFieldModule, MatInputModule, MatIconModule,MatPaginatorModule,FormsModule,CommonModule]
   
 })
 
@@ -49,6 +51,8 @@ export class PatientsListComponent implements AfterViewInit{
 
 
   decodedString: string | null = null;
+  role = localStorage.getItem('role');
+  
 
   
         private searchDPIUseCase = inject(SearchDPIUseCase); 
@@ -61,6 +65,8 @@ export class PatientsListComponent implements AfterViewInit{
     paginator!: MatPaginator;
     private snackBar = inject(MatSnackBar); 
 
+    constructor(private router : Router){}
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.getPatients()
@@ -71,6 +77,10 @@ export class PatientsListComponent implements AfterViewInit{
    onRowClicked(row: any) {
     console.log('Row clicked: ', row);
     // Add navigation or other actions here
+  }
+
+   navigateToNewDPI() {
+    this.router.navigate(['/create-dpi']); 
   }
 
   async onSearch(query:string | null) {

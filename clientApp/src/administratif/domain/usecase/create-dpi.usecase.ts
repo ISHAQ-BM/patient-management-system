@@ -26,7 +26,6 @@ export class CreateDPIUseCase implements UseCase<{},CreateDPIResponse>{
     mutuelle: string,
     personne_contact_nom: string,
     personne_contact_telephone: string,
-    medcin_traitant:string
   }
 }): Promise<CreateDPIResponse> {
         return this.administratifRepository.createDPI(params);

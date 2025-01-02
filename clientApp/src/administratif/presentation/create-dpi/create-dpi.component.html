@@ -1,133 +1,191 @@
-<form [formGroup]="authForm" (ngSubmit)="onSubmit()">
-      <mat-form-field class="input-container" appearance="outline">
-        <input
-          matInput
-          id="username"
-          formControlName="username"
-          placeholder="username"
-        />
+<form [formGroup]="dpiForm" (ngSubmit)="onSubmit()">
+
+
+  <div class="container">
+
+
+    <div class="form-field-container">
+    <label for="first_name">
+      <mat-icon class="input-icon">person</mat-icon>
+      First Name
+    </label>
+    <mat-form-field class="input-container" appearance="outline">
+      <input
+        matInput
+        id="first_name"
+        formControlName="first_name"
+      />
+    </mat-form-field>
+  </div>
+
+
+  <div class="form-field-container">
+    <label for="last_name">
+      <mat-icon class="input-icon">person</mat-icon>
+      Last Name
+    </label>
+    <mat-form-field class="input-container" appearance="outline">
+      <input
+        matInput
+        id="last_name"
+        formControlName="last_name"
+      />
+    </mat-form-field>
+  </div>
+
+
+
+  <div class="form-field-container">
+    <label for="email">
+      <mat-icon class="input-icon">email</mat-icon>
+      Email
+    </label>
+    <mat-form-field class="input-container" appearance="outline">
+      <input
+        matInput
+        id="email"
+        formControlName="email"
+      />
+    </mat-form-field>
+  </div>
+
+ 
+
+  <div class="form-field-container">
+    <label for="birth_day">
+      <mat-icon class="input-icon">calendar_today</mat-icon>
+      Birth day
+    </label>
+    <mat-form-field class="input-container" appearance="outline">
+      <input
+        matInput
+        id="birth_day"
+        formControlName="birth_day"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="form-field-container">
+    <label for="adresse">
+      <mat-icon class="input-icon">home</mat-icon>
+      Adresse
+    </label>
+    <mat-form-field class="input-container" appearance="outline">
+      <input
+        matInput
+        id="adresse"
+        formControlName="adresse"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="form-field-container">
+    <label for="phone">
+      <mat-icon class="input-icon">phone</mat-icon>
+      Phone
+    </label>
+    <mat-form-field class="input-container" appearance="outline">
+      <input
+        matInput
+        id="phone"
+        formControlName="phone"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="form-field-container">
+    <label for="social_security_number">
+      <mat-icon class="input-icon">assignment_ind</mat-icon>
+      Social Security Number
+    </label>
+    <mat-form-field class="input-container" appearance="outline">
+      <input
+        matInput
+        id="social_security_number"
+        formControlName="social_security_number"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="form-field-container">
+    <label for="mutual">
+      <mat-icon class="input-icon">account_balance_wallet</mat-icon>
+      Mutual
+    </label>
+    <mat-form-field class="input-container" appearance="outline">
+      <input
+        matInput
+        id="mutual"
+        formControlName="mutual"
+      />
+    </mat-form-field>
+  </div>
+  
+</div>
+
+  <div class="container">
+
+    <div class="form-field-container">
+    <label for="contact_person">
+      <mat-icon class="input-icon">person</mat-icon>
+      Contact person
+    </label>
+    <mat-form-field class="input-container" appearance="outline">
+      <input
+        matInput
+        id="contact_person"
+        formControlName="contact_person"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="form-field-container">
+    <label for="contact_person_phone">
+      <mat-icon class="input-icon">person</mat-icon>
+      Contact person phone
+    </label>
+    <mat-form-field class="input-container" appearance="outline">
+      <input
+        matInput
+        id="contact_person_phone"
+        formControlName="contact_person_phone"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="form-field-container">
+    <label for="username">
+      <mat-icon class="input-icon">person</mat-icon>
+      Username
+    </label>
+    <mat-form-field class="input-container" appearance="outline">
+      <input
+        matInput
+        id="username"
+        formControlName="username"
+      />
+    </mat-form-field>
+  </div>
+
+   <div class="form-field-container">
+    <label for="password">
+      <mat-icon class="input-icon">lock</mat-icon>
+      Password
+    </label>
+    <mat-form-field class="input-container" appearance="outline">
+      <input
+        matInput
+        id="password"
+        formControlName="password"
+      />
+    </mat-form-field>
+  </div>
+</div>
+
+  <button mat-raised-button class="submit" type="submit" [disabled]="!dpiForm.valid" >
         
-      </mat-form-field>
-
-      <mat-form-field class="input-container" appearance="outline">
-        <input
-          matInput
-          id="email"
-          formControlName="email"
-          placeholder="email"
-        />
-    
-      </mat-form-field>
-
-      <mat-form-field class="input-container" appearance="outline">
-        <input
-          matInput
-          id="password"
-          formControlName="password"
-          placeholder="password"
-        />
-        
-      </mat-form-field>
-
-      <mat-form-field class="input-container" appearance="outline">
-        <input
-          matInput
-          id="first_name"
-          formControlName="first_name"
-          placeholder="first_name"
-        />
-        
-      </mat-form-field>
-
-      <mat-form-field class="input-container" appearance="outline">
-        <input
-          matInput
-          id="last_name"
-          formControlName="last_name"
-          placeholder="last_name"
-        />
-    
-      </mat-form-field>
-
-      <mat-form-field class="input-container" appearance="outline">
-        <input
-          matInput
-          id="numero_securite_sociale"
-          formControlName="numero_securite_sociale"
-          placeholder="numero_securite_sociale"
-        />
-        
-      </mat-form-field>
-
-      <mat-form-field class="input-container" appearance="outline">
-        <input
-          matInput
-          id="date_naissance"
-          formControlName="date_naissance"
-          placeholder="date_naissance"
-        />
-        
-      </mat-form-field>
-
-
-      <mat-form-field class="input-container" appearance="outline">
-        <input
-          matInput
-          id="adresse"
-          formControlName="adresse"
-          placeholder="adresse"
-        />
-        
-      </mat-form-field>
-
-
-      <mat-form-field class="input-container" appearance="outline">
-        <input
-          matInput
-          id="telephone"
-          formControlName="telephone"
-          placeholder="telephone"
-        />
-      </mat-form-field>
-
-      <mat-form-field class="input-container" appearance="outline">
-        <input
-          matInput
-          id="mutuelle"
-          formControlName="mutuelle"
-          placeholder="mutuelle"
-        />
-      </mat-form-field>
-
-
-
-      <mat-form-field class="input-container" appearance="outline">
-        <input
-          matInput
-          id="personne_contact_nom"
-          formControlName="personne_contact_nom"
-          placeholder="personne_contact_nom"
-        />
-      </mat-form-field>
-
-
-      <mat-form-field class="input-container" appearance="outline">
-        <input
-          matInput
-          id="personne_contact_telephone"
-          formControlName="personne_contact_telephone"
-          placeholder="personne_contact_telephone"
-        />
-      </mat-form-field>
-
-      
-
-      
-
-      
-      <button mat-raised-button class="submit" type="submit" >
-        
-        Create
+        <mat-spinner *ngIf="isLoading" diameter="20" class="uploader-status" ></mat-spinner>
+        <span *ngIf="!isLoading">Create</span>
 
       </button>
-    </form>
+</form>

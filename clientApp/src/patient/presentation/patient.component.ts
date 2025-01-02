@@ -46,7 +46,7 @@ private snackBar = inject(MatSnackBar);
   
 
    async ngOnInit() {
-    const result = await this.getDpiUseCase.execute('62');
+    const result = await this.getDpiUseCase.execute();
     console.log(result);
     if (result) {
       this.dpiData=result
@@ -55,20 +55,8 @@ private snackBar = inject(MatSnackBar);
       this.showToast('error.', 'error');
     }
   }
-
-  async getDPI(id:string) {
-   
-    const result = await this.getDpiUseCase.execute(id);
-    console.log(result);
-    if (result) {
-      
-      this.showToast('success', 'error');
-    } else {
-      this.showToast('error.', 'error');
-    }
-    }
   
-
+  
    showToast(message: string, type: string): void {
     this.snackBar.open(message, 'Close', {
       duration: 3000,

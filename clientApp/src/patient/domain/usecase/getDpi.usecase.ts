@@ -6,12 +6,12 @@ import { PatientRepository } from "../repositories/patient.repository";
 @Injectable({
   providedIn: 'root',
 })
-export class GetDPIUseCase implements UseCase<{ }, DPIResponse> {
+export class GetDPIUseCase implements UseCase<{}, DPIResponse> {
 
   constructor(private patientRepository: PatientRepository) {}
 
-  execute(id: string ): Promise<DPIResponse> {
-    return this.patientRepository.getDPI(id);
+  execute(): Promise<DPIResponse> {
+    return this.patientRepository.getDPI();
   }
 
 }

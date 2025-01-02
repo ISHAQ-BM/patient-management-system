@@ -22,12 +22,7 @@
           formControlName="email"
           placeholder="Entrer votre nom d'utilisateur"
         />
-        <mat-error *ngIf="authForm.get('email')?.hasError('required')"
-          >Email is required.</mat-error
-        >
-        <mat-error *ngIf="authForm.get('email')?.hasError('email')"
-          >Please enter a valid email.</mat-error
-        >
+        
       </mat-form-field>
 
       <mat-form-field class="input-container" appearance="outline">

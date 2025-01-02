@@ -21,7 +21,6 @@ export abstract class AdministratifRepository {
     mutuelle: string,
     personne_contact_nom: string,
     personne_contact_telephone: string,
-    medcin_traitant:string
   }
 }): Promise<CreateDPIResponse>;
     

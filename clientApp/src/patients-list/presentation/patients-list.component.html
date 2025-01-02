@@ -24,7 +24,7 @@
 
     </button>
     </div>
-    <button class="qr-search-button">
+    <button class="qr-search-button"  *ngIf="role === 'PA'" (click)="navigateToNewDPI()">
       <mat-icon>add</mat-icon>
       New DPI
       

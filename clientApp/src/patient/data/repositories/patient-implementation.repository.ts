@@ -13,7 +13,7 @@ export class PatientImplementationRepository extends PatientRepository {
     super();
   }
 
-  override async getDPI(id: string): Promise<DPIResponse> {
+  override async getDPI(): Promise<DPIResponse> {
     
     const accessToken=localStorage.getItem('token_access')
     const headers = new HttpHeaders({
@@ -22,7 +22,7 @@ export class PatientImplementationRepository extends PatientRepository {
     });
     
     const response = await firstValueFrom(
-      this.http.get<DPIResponse>(`http://127.0.0.1:8000/api/mon-dossier/${id}/`,{headers})
+      this.http.get<DPIResponse>(`http://127.0.0.1:8000/api/mon-dossier/`,{headers})
     );
     return response;
   }

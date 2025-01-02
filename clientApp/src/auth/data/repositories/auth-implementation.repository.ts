@@ -25,6 +25,7 @@ export class AuthImplementationRepository extends AuthRepository {
         localStorage.setItem('role',response.user.role)
         localStorage.setItem('username',`${response.user.first_name} ${response.user.last_name} `)
         localStorage.setItem('token_access', response.tokens.access)
+        localStorage.setItem('id',response.user.id.toString())
         localStorage.setItem('refresh', response.tokens.refresh)
         return response;
     }
