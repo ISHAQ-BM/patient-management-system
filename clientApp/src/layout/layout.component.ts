@@ -26,8 +26,8 @@ export class LayoutComponent {
   ngOnInit( ): void {
     this.username = localStorage.getItem('username');
     this.role = localStorage.getItem('role');
+    this.role = this.role === 'P' ? 'Patient' : this.role === 'M' ? 'Médecin' : this.role === 'PA' ? 'Personnel Administratif' : this.role === 'PH' ? 'Pharmacien' : this.role === 'I' ? 'Infirmier' : 'Laborantin/Radiologue';
   }
-
   
    async logout() {
     try {
