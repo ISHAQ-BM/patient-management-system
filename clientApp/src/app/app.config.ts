@@ -17,6 +17,7 @@ import { SearchDPIUseCase } from '../patients-list/domain/usecase/searchDPIByNSS
 import { PatientsListRepository } from '../patients-list/domain/repositories/patients-list.repository';
 import { PatientsListImplementationRepository } from '../patients-list/data/repositories/patients-list-implementation.repository';
 import { LogoutUseCase } from '../auth/domain/usecase/lougout.usecase';
+import { GetPatientsListUseCase } from '../patients-list/domain/usecase/getPatientList.usecase';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -33,6 +34,7 @@ export const appConfig: ApplicationConfig = {
     { provide: GetDPIUseCase, useClass: GetDPIUseCase }, 
     { provide: PatientsListRepository, useClass: PatientsListImplementationRepository }, 
     { provide: SearchDPIUseCase, useClass: SearchDPIUseCase },
+    { provide: GetPatientsListUseCase, useClass: GetPatientsListUseCase },
     provideHttpClient(withFetch()), provideAnimationsAsync(), provideAnimationsAsync(),
   
   ]

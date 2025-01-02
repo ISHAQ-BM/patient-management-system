@@ -8,34 +8,33 @@ import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SearchDPIUseCase } from "../domain/usecase/searchDPIByNSS.usecase";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import jsQR from 'jsqr';
+import {  GetPatientsListUseCase } from "../domain/usecase/getPatientList.usecase";
 
 
 
 export interface PeriodicElement {
   patientName: string;
-  age: string;
-  gender: string;
-  bloodGroup: string;
+  nss: string;
   phoneNumber:string;
-  emailID:String
+  email:String
 
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
-  {patientName: 'test test', age: '40', gender: 'male', bloodGroup: 'A+',phoneNumber: '123456789',emailID: 'test@test.com'},
-  {patientName: 'test test', age: '40', gender: 'male', bloodGroup: 'A+',phoneNumber: '123456789',emailID: 'test@test.com'},
-  {patientName: 'test test', age: '40', gender: 'male', bloodGroup: 'A+',phoneNumber: '123456789',emailID: 'test@test.com'},
-  {patientName: 'test test', age: '40', gender: 'male', bloodGroup: 'A+',phoneNumber: '123456789',emailID: 'test@test.com'},
-  {patientName: 'test test', age: '40', gender: 'male', bloodGroup: 'A+',phoneNumber: '123456789',emailID: 'test@test.com'},
-  {patientName: 'test test', age: '40', gender: 'male', bloodGroup: 'A+',phoneNumber: '123456789',emailID: 'test@test.com'},
-  {patientName: 'test test', age: '40', gender: 'male', bloodGroup: 'A+',phoneNumber: '123456789',emailID: 'test@test.com'},
-  {patientName: 'test test', age: '40', gender: 'male', bloodGroup: 'A+',phoneNumber: '123456789',emailID: 'test@test.com'},
-  {patientName: 'test test', age: '40', gender: 'male', bloodGroup: 'A+',phoneNumber: '123456789',emailID: 'test@test.com'},
-  {patientName: 'test test', age: '40', gender: 'male', bloodGroup: 'A+',phoneNumber: '123456789',emailID: 'test@test.com'},
-  {patientName: 'test test', age: '40', gender: 'male', bloodGroup: 'A+',phoneNumber: '123456789',emailID: 'test@test.com'},
-  {patientName: 'test test', age: '40', gender: 'male', bloodGroup: 'A+',phoneNumber: '123456789',emailID: 'test@test.com'},
-  {patientName: 'test test', age: '40', gender: 'male', bloodGroup: 'A+',phoneNumber: '123456789',emailID: 'test@test.com'},
-  {patientName: 'test test', age: '40', gender: 'male', bloodGroup: 'A+',phoneNumber: '123456789',emailID: 'test@test.com'},
+  {patientName: 'test test', nss: '40',phoneNumber: '123456789',email: 'test@test.com'},
+  {patientName: 'test test', nss: '40',phoneNumber: '123456789',email: 'test@test.com'},
+  {patientName: 'test test', nss: '40',phoneNumber: '123456789',email: 'test@test.com'},
+  {patientName: 'test test', nss: '40',phoneNumber: '123456789',email: 'test@test.com'},
+  {patientName: 'test test', nss: '40',phoneNumber: '123456789',email: 'test@test.com'},
+  {patientName: 'test test', nss: '40',phoneNumber: '123456789',email: 'test@test.com'},
+  {patientName: 'test test', nss: '40',phoneNumber: '123456789',email: 'test@test.com'},
+  {patientName: 'test test', nss: '40',phoneNumber: '123456789',email: 'test@test.com'},
+  {patientName: 'test test', nss: '40',phoneNumber: '123456789',email: 'test@test.com'},
+  {patientName: 'test test', nss: '40',phoneNumber: '123456789',email: 'test@test.com'},
+  {patientName: 'test test', nss: '40',phoneNumber: '123456789',email: 'test@test.com'},
+  {patientName: 'test test', nss: '40',phoneNumber: '123456789',email: 'test@test.com'},
+  {patientName: 'test test', nss: '40',phoneNumber: '123456789',email: 'test@test.com'},
+  {patientName: 'test test', nss: '40',phoneNumber: '123456789',email: 'test@test.com'},
 ];
 
 @Component({
@@ -53,9 +52,10 @@ export class PatientsListComponent implements AfterViewInit{
 
   
         private searchDPIUseCase = inject(SearchDPIUseCase); 
+        private getPatientUseCase = inject(GetPatientsListUseCase); 
 
-    displayedColumns: string[] = ['patientName', 'age', 'gender', 'bloodGroup','phoneNumber','emailID'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+    displayedColumns: string[] = ['patientName', 'nss','phoneNumber','email'];
+  dataSource = new MatTableDataSource<PeriodicElement>([]);
 
    @ViewChild(MatPaginator)
     paginator!: MatPaginator;
@@ -63,6 +63,7 @@ export class PatientsListComponent implements AfterViewInit{
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.getPatients()
   }
   searchControl = new FormControl('');
 
@@ -88,6 +89,17 @@ export class PatientsListComponent implements AfterViewInit{
     this.showToast(error.message || 'An error occurred while searching.', 'error');
   }
 }
+
+
+
+ async getPatients(): Promise<void> {
+    try {
+      const patients = await this.getPatientUseCase.execute();
+      this.dataSource.data = patients.map(this.transformResultToElement);
+    } catch (error: any) {
+      this.showToast(error, 'error');
+    }
+  }
 
 
 onFileUpload(event: any): void {
@@ -130,12 +142,10 @@ onFileUpload(event: any): void {
 
   private transformResultToElement(result: any): PeriodicElement {
   return {
-    patientName: `${result.patient_info.nom} ${result.patient_info.prenom}`,
-    age: this.calculateAge(result.patient_info.date_naissance).toString(),
-    gender: result.gender || 'N/A',
-    bloodGroup: result.bloodGroup || 'N/A', 
-    phoneNumber: result.patient_info.telephone,
-    emailID: result.patient_info.medecin_traitant.split(' - ')[0], 
+    patientName: 'patient name',
+    nss: result.nss, 
+    phoneNumber: result.telephone,
+    email: result.email, 
   };
 }
 

@@ -23,7 +23,6 @@ export class LayoutComponent {
 
   role :string |null = null;
 
-  constructor(private router: Router){}
   ngOnInit( ): void {
     this.username = localStorage.getItem('username');
     this.role = localStorage.getItem('role');
