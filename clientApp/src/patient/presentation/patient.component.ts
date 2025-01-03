@@ -1,68 +1,54 @@
-import { Component, inject } from "@angular/core";
+import { Component, inject, OnInit } from "@angular/core";
 import { MatCardModule } from "@angular/material/card";
 import { MatIconModule } from "@angular/material/icon";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { GetDPIUseCase } from "../domain/usecase/getDpi.usecase";
 import { DPIResponse } from "../data/entities/dpi-response.entity";
 import { CommonModule } from "@angular/common";
-
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'patient',
   templateUrl: './patient.component.html',
-  styleUrl: './patient.component.css',
-  imports:[
-    
-        MatIconModule,
-        MatCardModule,
-        CommonModule
+  styleUrls: ['./patient.component.css'],
+  imports: [
+    MatIconModule,
+    MatCardModule,
+    CommonModule,
+    MatProgressSpinnerModule
   ]
-  
 })
-export class PatientComponent {
-     
-private snackBar = inject(MatSnackBar); 
-      private getDpiUseCase = inject(GetDPIUseCase); 
+export class PatientComponent implements OnInit {
+  private snackBar = inject(MatSnackBar);
+  private getDpiUseCase = inject(GetDPIUseCase);
 
-  
-       dpiData: DPIResponse  = {
-         numero_securite_sociale: "",
-         nom: "",
-         prenom: "",
-         date_naissance: "",
-         adresse: "",
-         telephone: "",
-         mutuelle: "",
-         medecin_traitant_nom: "",
-         personne_contact_nom: "",
-         personne_contact_telephone: "",
-         dossier: {
-           date_derniere_mise_a_jour: "",
-           antecedents: "",
-           consultations: []
-         }
-       };
+  dpiData: DPIResponse | null = null; 
 
-  
+  isLoading = true;
 
-   async ngOnInit() {
+async ngOnInit() {
+  try {
     const result = await this.getDpiUseCase.execute();
-    console.log(result);
     if (result) {
-      this.dpiData=result
-      this.showToast('success', 'error');
+      this.dpiData = result[0];
+      this.showToast('DPI data fetched successfully', 'success');
+      console.log('dpi',this.dpiData)
     } else {
-      this.showToast('error.', 'error');
+      this.showToast('No DPI data found.', 'error');
     }
+  } catch (error) {
+    console.error('Error fetching DPI data:', error);
+    this.showToast('An error occurred while fetching DPI data.', 'error');
+  } finally {
+    this.isLoading = false;
   }
-  
-  
-   showToast(message: string, type: string): void {
+}
+
+
+  showToast(message: string, type: string): void {
     this.snackBar.open(message, 'Close', {
       duration: 3000,
       panelClass: type === 'success' ? 'success-snackbar' : 'error-snackbar',
     });
   }
-
 }
-

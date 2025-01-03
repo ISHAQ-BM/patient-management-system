@@ -1,5 +1,8 @@
 <div *ngIf="dpiData" class="card-container">
     
+  <div *ngIf="isLoading" class="loading-container">
+  <mat-spinner></mat-spinner>
+</div>
     <div class="profile-section">
       <mat-icon class="avatar" [style.background-image]="'url(https://example.com/avatar.jpg)'"></mat-icon>
     <div class="profile-name">{{ dpiData.nom }} {{ dpiData.prenom }}</div>
@@ -50,14 +53,13 @@
       </div>
     </div>
 
-    
     <div class="info-item">
       <mat-icon class="icon">history_edu</mat-icon>
       <span class="label">Antecedent:</span>
-      <p class="value">{{ dpiData.dossier.antecedents }}</p>
+      <p class="value">{{ dpiData.dossier?.antecedents }}</p>
     </div>
-
-   
+    
+    
     <div class="info-item">
       <mat-icon class="icon">update</mat-icon>
       <span class="label">Last Update:</span>

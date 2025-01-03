@@ -5,5 +5,5 @@ import { DPIResponse } from "../../data/entities/dpi-response.entity";
   providedIn: 'root',
 })
 export abstract class PatientRepository {
-    abstract getDPI(): Promise<DPIResponse>;
+    abstract getDPI(): Promise<DPIResponse[]>;
 }

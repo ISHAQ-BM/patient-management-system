@@ -34,7 +34,7 @@ export class AuthComponent {
    isLoading = false;
 
   constructor(private fb: FormBuilder, private router: Router) { 
-  //localStorage.clear()
+  localStorage.clear()
     this.authForm = this.fb.group({
       email: [''],
       password: ['', [Validators.required, Validators.minLength(6)]],
